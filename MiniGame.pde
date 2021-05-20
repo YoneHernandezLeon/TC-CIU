@@ -1,7 +1,13 @@
-interface MiniGame {
+abstract class MiniGame {
+  int score = 0;
   
-  void display();
-  int getScore();
-  void control(int keyPress);
-  void control(int x, int y);
+  abstract void display();
+  
+  int getScore(){
+    return score;
+  }
+  
+  
+  abstract void control(int keyPress);
+  abstract void control(int x, int y);
 }
