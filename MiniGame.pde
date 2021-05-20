@@ -9,5 +9,5 @@ abstract class MiniGame {
   
   
   abstract void control(int keyPress);
-  abstract void control(int x, int y);
+  abstract void control(int x, int y, boolean left);
 }
