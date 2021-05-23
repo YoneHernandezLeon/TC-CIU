@@ -12,7 +12,7 @@ class Sudoku extends MiniGame{
   
   int index;
   
-  int aciertos = 0, fallos = 0;
+  int aciertos = 0, fallos = 0; //TIEMPO
   
   boolean success;
   
@@ -37,9 +37,11 @@ class Sudoku extends MiniGame{
   
   
   void howToPlay(){
+    pushMatrix();
     fill(0);
     textSize(50);
     text("PRESIONA ENTER PARA COMENZAR",15,300);
+    popMatrix();
   }
   
   void inGame(){
@@ -56,6 +58,7 @@ class Sudoku extends MiniGame{
   }
   
   void printText(){
+    pushMatrix();
     textSize(40);
     fill(255,0,0);
     text("Fallos: "+fallos, 20,65);
@@ -63,7 +66,7 @@ class Sudoku extends MiniGame{
     text("Aciertos: "+aciertos, 210,65);
     fill(0,0,255);
     text("Puntuación: "+score, 570,65);
-    
+    popMatrix();
     
   }
   

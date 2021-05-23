@@ -19,7 +19,8 @@ class CoinChange extends MiniGame {
   private float price;
   private int paid, paidCount;
 
-  CoinChange() {
+  CoinChange(String gameName) {
+    this.gameName = gameName;
     this.score = 0;
 
     coins = new int[6];
@@ -83,7 +84,7 @@ class CoinChange extends MiniGame {
   }
 
   void control(int keyPress) {
-    if (keyPress == ENTER) {
+    if (keyPress == 32) {
       calculate();
     }
   }
@@ -215,7 +216,9 @@ class CoinChange extends MiniGame {
 
   private void calculate() {
     float res = coins[0] * 2 + coins[1] + coins[2] * 0.5 + coins[3] * 0.2 + coins[4] * 0.1 + coins[5] * 0.05;
+    pushMatrix();
     textAlign(CENTER, CENTER);
+    popMatrix();
     if (res + price == paid) {
       text("Ganaste", 1000, 360);
     }
