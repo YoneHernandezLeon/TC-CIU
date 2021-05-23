@@ -13,7 +13,7 @@ void setup(){
   
   
   gameList[0] = new Sudoku("Sudoku");
-  gameList[1] = new Memory("Memory");
+  gameList[1] = new Memory("Memory", new Pulse(this));
   gameList[2] = new CoinChange("Coins");
 }
 
@@ -103,4 +103,8 @@ void keyPressed(){
 
 void mousePressed(){
   gameList[index].control(mouseX, mouseY, (mouseButton ==  LEFT));
+}
+
+void mouseReleased(){
+
 }

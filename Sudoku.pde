@@ -16,9 +16,20 @@ class Sudoku extends MiniGame{
   
   boolean success;
   
+  int startTime, h, m;
+  boolean startTimer = true;
+  
   
   Sudoku(String gameName){
     this.gameName = gameName;
+  
+  }
+  
+  void reset(){
+  
+  }
+  
+  void endGame(){
   
   }
   
@@ -26,6 +37,10 @@ class Sudoku extends MiniGame{
   void display(){
     if(start){
       if (timerFinished){
+        if(startTimer){
+          startTime = millis();
+          startTimer = false;
+        }
         inGame();
       } else {
         countDown();
@@ -59,14 +74,32 @@ class Sudoku extends MiniGame{
   
   void printText(){
     pushMatrix();
-    textSize(40);
+    /*textSize(40);
     fill(255,0,0);
     text("Fallos: "+fallos, 20,65);
     fill(0,255,0);
     text("Aciertos: "+aciertos, 210,65);
     fill(0,0,255);
     text("Puntuación: "+score, 570,65);
+    */
+    
+    fill(0,0,255);
+    score = (millis()-startTime)/1000;
+    h = 0;
+    while(score > 3600){
+      h++;
+      score -= 3600;
+    }
+    m = 0;
+    while(score > 60){
+      m++;
+      score -= 60;
+    }
+    
+    text("Tiempo: "+h+":"+m+":"+score, 20,65);
     popMatrix();
+    
+    
     
   }
   

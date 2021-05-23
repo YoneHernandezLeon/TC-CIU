@@ -26,6 +26,15 @@ abstract class MiniGame {
   */
   abstract void howToPlay();
   
+  /*
+  Este metodo se encarga de resetear las variables del minijuego
+  */
+  abstract void reset();
+  
+  /*
+  Este metodo se encarga de mostrar y terminar correctamente la partida
+  */
+  abstract void endGame();
   
   /*
   Este metodo muestra y gestiona todo el juego como tal

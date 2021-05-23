@@ -46,6 +46,9 @@ class CoinChange extends MiniGame {
     }
   }
   
+  void reset(){}
+  void endGame(){}
+  
   void howToPlay(){
   }
   
