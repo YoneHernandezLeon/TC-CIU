@@ -1,14 +1,20 @@
 abstract class MiniGame {
-  int score = 0;
   boolean start = false;
+  
+  boolean timerFinished = false;
+  int millis;
+  
+  int score = 0;
+  
   String gameName = "";
+  
   
   
   /*
   Este metodo se encarga de gestionar que se muestre el juego o las instrucciones.
   
   Gestion basica usando el parametro start
-    start = false -> howToPlay()
+    start = false && timer != 0 -> howToPlay()
     start = true -> inGame()
   
   */
@@ -54,20 +60,24 @@ abstract class MiniGame {
   Este metodo se encarga de mostrar por pantalla una cuenta atras de 3 segundos antes de comenzar el juego
   */
   void countDown(){
-    background(255);
+    stroke(0);
     textSize(50);
-    text("3",400,400);
-    delay(1000);
-    background(255);
-    text("2",400,400);
-    delay(1000);
-    background(255);
-    text("1",400,400);
-    delay(1000);
-    background(255);
-    text("YA",400,400);
-    delay(100);
-    background(255);
+    if(millis - millis() <= -1000){
+      if(millis - millis() <= -2000 ){
+        if(millis - millis() <= -3000 ){
+          text("YA",400,400);
+          if(millis - millis() <= -3400 ){
+            timerFinished = true;
+          }
+        } else{
+          text("1",400,400);
+        }
+      } else {
+        text("2",400,400);
+      }
+    } else {
+      text("3",400,400);   
+    }
   }
   
   
