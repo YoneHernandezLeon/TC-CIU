@@ -48,6 +48,8 @@ class CoinChange extends MiniGame {
   
   void reset(){}
   void endGame(){}
+  void controlDisplay(){}
+  boolean isGameFinished(){return true;}
   
   void howToPlay(){
   }
@@ -221,9 +223,10 @@ class CoinChange extends MiniGame {
     float res = coins[0] * 2 + coins[1] + coins[2] * 0.5 + coins[3] * 0.2 + coins[4] * 0.1 + coins[5] * 0.05;
     pushMatrix();
     textAlign(CENTER, CENTER);
-    popMatrix();
+    
     if (res + price == paid) {
       text("Ganaste", 1000, 360);
     }
+    popMatrix();
   }
 }

@@ -31,6 +31,7 @@ class Memory extends MiniGame{
   }
   
   void reset(){
+    super.reset();
     waiting = false;
     nSounds = 1;
     streak = 0;
@@ -43,7 +44,18 @@ class Memory extends MiniGame{
   }
   
   void endGame(){
+    fill(0);
+    textSize(50);
+    text("Has perdido con una racha de "+ streak,15,300);
+    text("Pulsa retroceso para volver al menu",15,700);
+  }
   
+  void controlDisplay(){
+    pushMatrix();
+    fill(0);
+    textSize(20);
+    text("Click izquierdo sobre una tecla\npara seleccionarla como la\nsiguiente tecla de secuencia\n\nPulsa RETROCESO para abandonar\nla partida y volver al menu", 915, 40);
+    popMatrix();
   }
   
   void display(){
@@ -58,22 +70,38 @@ class Memory extends MiniGame{
         howToPlay();
       }
     } else {
-      fill(0);
-      textSize(50);
-      text("Has perdido con una racha de "+ streak,15,300);
+      endGame();
+      
     }
   }
   
   
   void howToPlay(){
+    pushMatrix();
     fill(0);
     textSize(50);
-    text("PRESIONA ENTER PARA COMENZAR",15,300);
+    textAlign(CENTER, CENTER);
+    text("MEMORY",450,60);
+    textSize(40);
+    text("PRESIONA ENTER PARA COMENZAR",450,120);
+    textSize(30);
+    textAlign(LEFT);
+    text("Instrucciones",15,170);
+    textSize(20);
+    text(
+    "-Este minijuego consiste en escuchar y ver una secuencia de sonidos y luces y repetirla\npulsando las mismas teclas.\n"+
+    "-La puntuacion del juego esta definida por el numero de secuencias seguidas que\naciertes.\n"+
+    "-Tanto el sonido como la iluminacion se mantendran durante 1 segundo. Tras completar\ncorrectamente una secuencia habra una pausa de 1 segundo antes de comenzar la\nsiguiente.\n"
+    ,15,210);
+    text("Pulsa retroceso para volver al menu",15,700);
+    popMatrix();
+    controlDisplay();
   }
   
   void inGame(){
     displayKeyList();
     displayText();
+    controlDisplay();
     
     
     if(displaySound){
@@ -116,13 +144,23 @@ class Memory extends MiniGame{
   }
   
   void displayText(){
+    pushMatrix();
+    textSize(30);
+    fill(0);
     text("Racha = "+streak,20,65);
+    textSize(30);
+    if(waiting){
+      text("Pulsa las teclas en el orden correcto",350,65);  
+    } else {
+      text("Presta atencion a la secuencia",350,65);  
+    }
+    popMatrix();
   }
   
   void createKeyList(){
     keyList = new ArrayList<myKey>();
     //Dejando 10 a izq y der, cada pieza es 110 de ancho.
-    keyList.add(new myKey(10,150,120,400,1,0,0,0,130));
+    /*keyList.add(new myKey(10,150,120,400,1,0,0,0,130));
     keyList.add(new myKey(10,400,120,650,2,23,32,42,140));
     keyList.add(new myKey(120,150,230,400,3,33,47,60,150));
     keyList.add(new myKey(120,400,230,650,4,66,73,73,160));
@@ -138,6 +176,12 @@ class Memory extends MiniGame{
     keyList.add(new myKey(670,400,780,650,14,165,105,189,260));
     keyList.add(new myKey(780,150,890,400,15,203,67,53,270));
     keyList.add(new myKey(780,400,890,650,16,100,30,22,280));
+   */
+   
+   keyList.add(new myKey(0,100,450,410,1,0,255,0,150));
+   keyList.add(new myKey(450,100,900,410,2,255,0,0,200));
+   keyList.add(new myKey(0,410,450,720,3,255,255,0,250));
+   keyList.add(new myKey(450,410,900,720,4,0,0,255,300));
   }
 
   void displayKeyList(){
@@ -198,14 +242,13 @@ class Memory extends MiniGame{
     } 
   }
   
-  
-  int getScore(){
-    return score;
+  String getGameName(){
+    return gameName;
   }
   
   
-  String getGameName(){
-    return gameName;
+  boolean isGameFinished(){
+    return true;
   }
   
   
@@ -250,9 +293,9 @@ class myKey{
   
   void display(boolean b){
     if(b){
-      fill(R,G,B);
+      fill(R,G,B, 250);
     } else {
-      fill(255);
+      fill(R,G,B, 80);
     }
     rect(x,y, finx - x,finy - y);
 

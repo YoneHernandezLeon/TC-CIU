@@ -1,7 +1,7 @@
 abstract class MiniGame {
   boolean start = false;
   
-  boolean timerFinished = false;
+  boolean timerFinished = false, countdownOn = false;
   int millis;
   
   int score = 0;
@@ -27,9 +27,21 @@ abstract class MiniGame {
   abstract void howToPlay();
   
   /*
+  Este metodo se encarga de mostrar los controles
+  */
+  abstract void controlDisplay();
+ 
+ 
+  /*
   Este metodo se encarga de resetear las variables del minijuego
   */
-  abstract void reset();
+  void reset(){
+    start = false;
+    timerFinished = false;
+    countdownOn = false;
+    millis = 0;
+    score = 0;
+  }
   
   /*
   Este metodo se encarga de mostrar y terminar correctamente la partida
@@ -69,6 +81,7 @@ abstract class MiniGame {
   Este metodo se encarga de mostrar por pantalla una cuenta atras de 3 segundos antes de comenzar el juego
   */
   void countDown(){
+    countdownOn = true;
     stroke(0);
     textSize(50);
     if(millis - millis() <= -1000){
@@ -76,6 +89,7 @@ abstract class MiniGame {
         if(millis - millis() <= -3000 ){
           text("YA",400,400);
           if(millis - millis() <= -3400 ){
+            countdownOn = false;
             timerFinished = true;
           }
         } else{
@@ -89,6 +103,23 @@ abstract class MiniGame {
     }
   }
   
+  /*
+  Este metodo devuelve si el progrograma se encuentra dentro de la cuenta atras o no.
+  Durante este tiempo el usuario no puede interactuar.
+  
+  Devuevle:
+    boolean countdownOn: Esta variable esta a true mientras el contador este activado y a false cuando se termine
+  */
+  boolean isInCountdown(){
+    return countdownOn;
+  }
+  
+  /*
+  Este metodo devuelve si la partida a acabado correctamente o si ha perdido
+  Devuelve:
+    true/false: Partida completada/Partida perdida 
+  */
+  abstract boolean isGameFinished();
   
   /*
   Este metodo se encarga de recibir la tecla pulsada para su gestion apropiada
