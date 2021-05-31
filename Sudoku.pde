@@ -59,7 +59,6 @@ class Sudoku extends MiniGame {
 
     text("Tiempo acumulado por vidas perdidas: " + fallos + " Minutos", 100, 330);
 
-    score = score+(fallos*60);
     s = score;
     h = 0;
     while (s >= 3600) {
@@ -165,6 +164,8 @@ class Sudoku extends MiniGame {
         }
       }
     }
+    
+    score = score+(fallos*60);
     gameFinished = true;
   }
 
@@ -302,7 +303,7 @@ class Sudoku extends MiniGame {
           break;
         }
         success = selected.getPieceEnded();
-        if (!success) {
+        if (!success && !gameFinished) {
           fallos++;
         }
       } 

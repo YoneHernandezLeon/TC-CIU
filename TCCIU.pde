@@ -167,7 +167,7 @@ void displayMinigames(){
   text("P.A.", 440, 260);
   for(int i = 0; i < numberOfGames; i++){
     text(gameList[i].getGameName(),250,300+40*i);
-    text(gameScore[i],440,300+40*i);
+    text(abs(gameScore[i]),440,300+40*i);
   }
   text("P.A. = puntuacion maxima actual para cada minijuego", 15, 700);
   
@@ -226,11 +226,11 @@ void enterNewMenu(){
     case 0:
       inGame = true;
     break;
-    case 2:
+    case 1:
       if(menuUserIndex == 0){
-        
+        //Borrar usuario
       } else {
-      
+        //Capturar imagen
       }
   }
   
@@ -295,7 +295,7 @@ void mousePressed(){
 void checkGame(){
   if(inGame &&  gameList[menuMinigamesIndex].isGameFinished()){
     println(gameList[menuMinigamesIndex].getScore());
-    if(gameScore[menuMinigamesIndex] > gameList[menuMinigamesIndex].getScore()){
+    if(gameScore[menuMinigamesIndex] < gameList[menuMinigamesIndex].getScore()){
       gameScore[menuMinigamesIndex] = gameList[menuMinigamesIndex].getScore();
     }
   }
