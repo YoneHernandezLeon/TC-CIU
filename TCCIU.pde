@@ -21,6 +21,9 @@ String dataPath;
 ManageUser mg;
 User currentUser;
 
+int barLimit = 300,volume = 50;
+boolean volumeOption = false, pateleteOption = false, fontOption = false;
+
 void setup(){
   size(1280,720);
   stroke(15);
@@ -82,7 +85,6 @@ void draw(){
 */
 
 void displayRightPanel(){
-  stroke(0);
   line(900,0,900,720);
   displayControlBox();
   displayUser();
@@ -92,7 +94,11 @@ void displayControlBox(){
   pushMatrix();
   noFill();
   rect(910,20,350,290);
-  
+  if(!inGame){
+    fill(0);
+    textSize(20);
+    text("Usa las flechas arriba y abajo para\nmoverte por los distintos menus.\nPulsa las flechas izquierda y\nderecha para aumentar o disminuir\nlas opciones que lo requieran\nPulsa ENTER para acceder al\nmenu o juego\nPulsa RETROCESO para volver al\nmenu", 915, 40);
+  }
   popMatrix();
 }
 
@@ -133,10 +139,6 @@ void changeUser(){
   userLogged = false;
   mg.saveUser(currentUser);
   resetMenu();
-}
-
-void displayOptions(){
-
 }
 
 void displayCredits(){
@@ -197,6 +199,34 @@ void displayMinigameBox(){
 }
 
 
+void displayOptions(){
+  textSize(40);
+  text("Opciones",320,250);
+  textSize(30);
+  text("Volumen",250,300);
+  noFill();
+  rect(250,320,barLimit,20);
+  fill(125);
+  rect(250,320,volume*3,20);
+  fill(0);
+  text("Cambiar paleta de colores",250,390);
+  text("Cambiar fuente de letra",250,430);
+  displayOptionsBox();
+}
+
+void displayOptionsBox(){
+  noFill();
+  strokeWeight(5);
+  if(menuOptionsIndex != 0){
+    //Opciones para paleta y fuente
+    rect(240,315+menuOptionsIndex*40,390,45);
+    volumeOption = false;
+  } else {
+    rect(240,265,390,45);
+    volumeOption = true;
+  }
+}
+
 
 
 /*
@@ -216,6 +246,10 @@ void currentIndexUp(){
     menuMinigamesIndex--;
     if (menuMinigamesIndex == -1){menuMinigamesIndex = 2;}
     break;
+    case 3:
+    menuOptionsIndex--;
+    if (menuOptionsIndex == -1){menuOptionsIndex = 2;}
+    break;
   }
 
 }
@@ -230,6 +264,10 @@ void currentIndexDown(){
     case 0:
     menuMinigamesIndex++;
     if (menuMinigamesIndex == 3){menuMinigamesIndex = 0;}
+    break;
+    case 3:
+    menuOptionsIndex++;
+    if (menuOptionsIndex == 3){menuOptionsIndex = 0;}
     break;
   }
 }
@@ -248,13 +286,14 @@ void enterNewMenu(){
       } else {
         //Capturar imagen
       }
+    break;
   }
   
 }
 
 void resetMenu(){
-  menuIndex = 0;  menuMinigamesIndex = 0; menuOptionsIndex= 0; menuSelected = -1; menuUserIndex = 0;
   gameList[menuMinigamesIndex].reset();
+  menuIndex = 0;  menuMinigamesIndex = 0; menuOptionsIndex= 0; menuSelected = -1; menuUserIndex = 0;
   inGame = false;
 }
 
@@ -275,6 +314,16 @@ void keyPressed(){
         if(keyCode == ENTER){
           enterNewMenu();
         }
+        
+        if(keyCode == LEFT && volumeOption){
+          volume--;
+          if(volume<0){volume=0;}
+        }
+        if(keyCode == RIGHT && volumeOption){
+          volume++;
+          if(volume>100){volume=100;}
+        }
+        
       }
       
       if(keyCode == BACKSPACE){
@@ -311,10 +360,8 @@ void mousePressed(){
 
 void checkGame(){
   if(inGame &&  gameList[menuMinigamesIndex].isGameFinished()){
-    println(gameList[menuMinigamesIndex].getScore());
-    //if(gameScore[menuMinigamesIndex] < gameList[menuMinigamesIndex].getScore()){
-      currentUser.setScoreOf(gameList[menuMinigamesIndex].getScore(), gameList[menuMinigamesIndex].getGameName());
-    //}
+    //println(gameList[menuMinigamesIndex].getGameName()+": "+gameList[menuMinigamesIndex].getScore());
+    currentUser.setScoreOf(gameList[menuMinigamesIndex].getScore(), gameList[menuMinigamesIndex].getGameName());
   }
 }
 

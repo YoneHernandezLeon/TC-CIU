@@ -16,8 +16,10 @@ class Sudoku extends MiniGame {
 
   boolean success;
   boolean gameFinished = false;
+  boolean failAdded = false;
 
   int startTime, h, m, s;
+  String ohs="00", oms="00", oss="00";
   String hs="00", ms="00", ss="00";
   boolean startTimer = true;
 
@@ -37,7 +39,11 @@ class Sudoku extends MiniGame {
     hs="00"; 
     ms="00"; 
     ss="00";
+    ohs="00"; 
+    oms="00"; 
+    oss="00";
     fallos = 0;
+    failAdded = false;
   }
 
 
@@ -54,11 +60,20 @@ class Sudoku extends MiniGame {
   void endGame() {
     pushMatrix();
     textSize(30);
-    text("Tiempo acumulado: " +hs+":"+ms+":"+ss, 100, 250);
+    if(!failAdded){
+      ohs=hs; 
+      oms=ms; 
+      oss=ss;
+      score = score+(fallos*60);
+      failAdded = true;
+    }
+    text("Tiempo acumulado: " +ohs+":"+oms+":"+oss, 100, 250);
     text("Vidas restantes: " + (5-fallos), 100, 290);
 
     text("Tiempo acumulado por vidas perdidas: " + fallos + " Minutos", 100, 330);
 
+    
+    
     s = score;
     h = 0;
     while (s >= 3600) {
@@ -124,8 +139,6 @@ class Sudoku extends MiniGame {
     textSize(50);
     textAlign(CENTER, CENTER);
     text("SUDOKU", 450, 60);
-    textSize(40);
-    text("PRESIONA ENTER PARA COMENZAR", 450, 120);
     textSize(30);
     textAlign(LEFT);
     text("Instrucciones", 15, 170);
@@ -135,7 +148,8 @@ class Sudoku extends MiniGame {
       "-Comienzas el juego con 5 vidas. Pierdes una vida cada vez que coloques un numero mal.\nSabras que un numero esta mal porque saldra en rojo. Si un numero sale en verde\nesto indica que es correcto.\n"+
       "-Si te quedas sin vidas pierdes. Si completas el sudoku con alguna vida restante tu\npuntuacion sera el tiempo que has tardado mas una penalizacion por las vidas perdidas.\n"
       , 15, 210);
-    text("Pulsa retroceso para volver al menu", 15, 700);
+    text("Pulsa enter para comenzar", 15, 700);
+    text("Pulsa retroceso para volver al menu", 540, 700);
     popMatrix();
     controlDisplay();
   }
@@ -145,6 +159,7 @@ class Sudoku extends MiniGame {
       if (fallos >= 5) {
         youLoose();
       } else {
+        //Rectangulo blanco como fondo
         printBoard();
         printText();
         controlDisplay();
@@ -164,8 +179,7 @@ class Sudoku extends MiniGame {
         }
       }
     }
-    
-    score = score+(fallos*60);
+
     gameFinished = true;
   }
 
