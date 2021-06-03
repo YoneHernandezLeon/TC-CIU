@@ -16,6 +16,11 @@ class CoinChange extends MiniGame {
   private String ohs="00", oms="00", oss="00";
   private String hs="00", ms="00", ss="00";
   
+  private PImage e50tex, e20tex, e10tex, e5tex, e2tex, e1tex, c50tex, c20tex, c10tex, c5tex;
+  
+  private PShape e50, e20, e10, e5;
+  private PShape[] cshapes = new PShape[6];
+  
   private Palette p;
   
   PImage howto;
@@ -24,6 +29,28 @@ class CoinChange extends MiniGame {
     this.score = 0;
     this.gameName = name;
     this.maxLevel = 7;
+    
+    e50tex = loadImage("img/money/50e.png");
+    e20tex = loadImage("img/money/20e.png");
+    e10tex = loadImage("img/money/10e.png");
+    e5tex = loadImage("img/money/5e.png");
+    e2tex = loadImage("img/money/2e.png");
+    e1tex = loadImage("img/money/1e.png");
+    c50tex = loadImage("img/money/50c.png");
+    c20tex = loadImage("img/money/20c.png");
+    c10tex = loadImage("img/money/10c.png");
+    c5tex = loadImage("img/money/5c.png");
+
+    e50 = createBill(e50tex);
+    e20 = createBill(e20tex);
+    e10 = createBill(e10tex);
+    e5 = createBill(e5tex);
+    cshapes[0] = createCoin(e2tex);
+    cshapes[1] = createCoin(e1tex);
+    cshapes[2] = createCoin(c50tex);
+    cshapes[3] = createCoin(c20tex);
+    cshapes[4] = createCoin(c10tex);
+    cshapes[5] = createCoin(c5tex);
 
     coins = new int[6];
     this.setStartValues();
@@ -39,6 +66,9 @@ class CoinChange extends MiniGame {
     level = 0;
     fallos = 0;
     startTime = 0;
+    h = 0;
+    m = 0;
+    s = 0;
     startTimer = true;
     failAdded = false;
     setStartValues();
@@ -276,70 +306,42 @@ class CoinChange extends MiniGame {
     textAlign(CENTER, CENTER);
     switch(paidCount) {
     case 0:
-      rect(70, 419, 260, 130);
-      fill(p.r, p.g, p.b);
-      text("5€", 200, 484);
+      shape(e5, 70, 409);
       break;
     case 1:
-      rect(70, 419, 260, 130);
-      fill(p.r, p.g, p.b);
-      text("10€", 200, 484);
+      shape(e10, 70, 409);
       break;
     case 2:
-      rect(20, 309, 260, 130);
-      rect(120, 529, 260, 130);
-      fill(p.r, p.g, p.b);
-      text("10€", 150, 374);
-      text("5€", 250, 594);
+      shape(e10, 20, 299);
+      shape(e5, 120, 519);
       break;
     case 3:
-      rect(70, 419, 260, 130);
-      fill(p.r, p.g, p.b);
-      text("20€", 200, 484);
+      shape(e20, 70, 409);
       break;
     case 4:
-      rect(20, 309, 260, 130);
-      rect(120, 529, 260, 130);
-      fill(p.r, p.g, p.b);
-      text("20€", 150, 374);
-      text("5€", 250, 594);
+      shape(e20, 20, 299);
+      shape(e5, 120, 519);
       break;
     case 5:
-      rect(20, 309, 260, 130);
-      rect(120, 529, 260, 130);
-      fill(p.r, p.g, p.b);
-      text("20€", 150, 374);
-      text("10€", 250, 594);
+      shape(e20, 20, 299);
+      shape(e10, 120, 519);
       break;
     case 6:
-      rect(20, 269, 260, 130);
-      rect(70, 419, 260, 130);
-      rect(120, 569, 260, 130);
-      fill(p.r, p.g, p.b);
-      text("20€", 150, 334);
-      text("10€", 200, 484);
-      text("5€", 250, 634);
+      shape(e20, 20, 249);
+      shape(e10, 70, 409);
+      shape(e5, 120, 569);
       break;
     case 7:
-      rect(20, 309, 260, 130);
-      rect(120, 529, 260, 130);
-      fill(p.r, p.g, p.b);
-      text("20€", 150, 374);
-      text("20€", 250, 594);
+      shape(e20, 20, 299);
+      shape(e20, 120, 519);
       break;
     case 8:
-      rect(20, 269, 260, 130);
-      rect(70, 419, 260, 130);
-      rect(120, 569, 260, 130);
-      fill(p.r, p.g, p.b);
-      text("20€", 150, 334);
-      text("20€", 200, 484);
-      text("5€", 250, 634);
+      shape(e20, 20, 249);
+      shape(e20, 70, 409);
+      shape(e5, 120, 569);
       break;
     case 9:
-      rect(70, 419, 260, 130);
-      fill(p.r, p.g, p.b);
-      text("50€", 200, 484);
+      shape(e50, 70, 409);
       break;
     }
     popMatrix();
@@ -350,15 +352,9 @@ class CoinChange extends MiniGame {
     textSize(30);
     for (int i = 0; i < coins.length; i++) {
       for (int j = 0; j < coins[i]; j++) {
-        fill(240, 230, 140);
-        circle(presult[i][0] + offset[j][0], presult[i][1] + offset[j][1], dim);
-        fill(p.r, p.g, p.b);
-        text(coinLabel[i], presult[i][0] + offset[j][0], presult[i][1] + offset[j][1]);
+        shape(cshapes[i], presult[i][0] + offset[j][0] - 50, presult[i][1] + offset[j][1] - 50);
       }
-      fill(240, 230, 140);
-      circle(pcoins[i][0], pcoins[i][1], dim);
-      fill(p.r, p.g, p.b);
-      text(coinLabel[i], pcoins[i][0], pcoins[i][1]);
+      shape(cshapes[i], pcoins[i][0] - 50, pcoins[i][1] - 50);
     }
     popMatrix();
   }
@@ -374,5 +370,25 @@ class CoinChange extends MiniGame {
       fallos++;
     }
     popMatrix();
+  }
+  
+  private PShape createCoin(PImage i){
+    i.resize(dim, dim);
+    PShape p = createShape(RECT, 0, 0, dim, dim);
+    beginShape();
+    print("coin\n");
+    p.setTexture(i);
+    endShape();
+    return p;
+  }
+  
+  private PShape createBill(PImage i){
+    stroke(15);
+    PShape p = createShape(RECT, 0, 0, 260, 150);
+    beginShape();
+    print("bill\n");
+    p.setTexture(i);
+    endShape();
+    return p;
   }
 }
