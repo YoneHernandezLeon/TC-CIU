@@ -1,12 +1,4 @@
 class CoinChange extends MiniGame {
-  /*
-  private final int twoD = 100;
-   private final int oneD = 90;
-   private final int fiftyD = 95;
-   private final int twentyD = 80;
-   private final int tenD = 70;
-   private final int fiveD = 75;
-   */
 
   private final int dim = 100;
   private final int[][] pcoins = {{483, 504}, {483, 648}, {649, 504}, {649, 648}, {815, 504}, {815, 648}};
@@ -17,13 +9,182 @@ class CoinChange extends MiniGame {
 
   private int[] coins;
   private float price;
-  private int paid, paidCount;
+  private int paid, paidCount, level, maxLevel;
 
-  CoinChange(String gameName) {
-    this.gameName = gameName;
+  private boolean startTimer = true, failAdded = false;
+  private int startTime, h, m, s, fallos;
+  private String ohs="00", oms="00", oss="00";
+  private String hs="00", ms="00", ss="00";
+
+  CoinChange(String name) {
     this.score = 0;
+    this.gameName = name;
+    this.maxLevel = 7;
 
     coins = new int[6];
+    this.setStartValues();
+  }
+
+  void reset() {
+    print("reset\n");
+    super.reset();
+
+    score = 0;
+    level = 0;
+    fallos = 0;
+    startTime = 0;
+    startTimer = true;
+    failAdded = false;
+    setStartValues();
+  }
+
+  void endGame() {
+    pushMatrix();
+    textSize(30);
+    if (!failAdded){
+      score += fallos * 10;
+      ohs = hs;
+      oms = ms;
+      oss = ss;
+      failAdded = true;
+    }
+    text("Tiempo acumulado: " +ohs+":"+oms+":"+oss, 100, 250);
+    text("Fallos cometidos: " + fallos, 100, 290);
+
+    text("Tiempo acumulado por fallos cometidos:\n" + fallos + " fallos x 10 segundos = " + fallos * 10 + " segundos", 100, 330);
+
+    s = score;
+    h = 0;
+    while (s >= 3600) {
+      h++;
+      if (h<10) {
+        hs = "0"+h;
+      } else {
+        hs = ""+h;
+      }
+      s -= 3600;
+    }
+    m = 0;
+    while (s >= 60) {
+      m++;
+      if (m<10) {
+        ms = "0"+m;
+      } else {
+        ms = ""+m;
+      }
+      s -= 60;
+    }
+    if (s<10) {
+      ss = "0"+s;
+    } else {
+      ss = ""+s;
+    }
+    
+    text("Tiempo final: "+hs+":"+ms+":"+ss, 100, 420);
+    text("Pulsa retroceso para volver al menu",15,700);
+    popMatrix();
+  }
+
+  void controlDisplay() {
+    //rect(910,20,350,290);
+    pushMatrix();
+    fill(0);
+    textSize(20);
+    textAlign(LEFT);
+    text("Click izquierdo sobre una moneda\npara añadirla al bote.\nClick derecho sobre una moneda\npara retirarla del bote.\nPulsa espacio para confirmar\nel cambio.\n\nPulsa RETROCESO para abandonar\nla partida y volver al menu.", 915, 45);
+
+    popMatrix();
+  }
+
+  boolean isGameFinished() {
+    return score != 0;
+  }
+
+  void howToPlay() {
+    pushMatrix();
+    fill(0);
+    textSize(50);
+    textAlign(CENTER, CENTER);
+    text("CAMBIO DE MONEDAS", 450, 60);
+    textSize(30);
+    textAlign(LEFT);
+    text("Instrucciones", 15, 140);
+    textSize(20);
+    text(
+      "-Este minijuego consiste en entregar (en monedas) el camio exacto al cliente, quien\npagará siempre con billetes de 5, 10 y 20€\n"+
+      "-En la parte izquierda del juego encontrarás el precio que tiene que pagar el cliente\n(arriba) y los billetes con los que paga (abajo).\n"+
+      "-En la parte derecha del juego encontrarás el bote con las monedas seleccionadas (arriba)\ny los botones para añadir o retirar monedas (abajo).\n"+
+      "-Tu puntuacion final sera el tiempo que has tardado en completar 7 casos mas una\npenalizacion por cada fallo cometido.\n"
+      , 15, 180);
+    text("Pulsa enter para comenzar", 15, 700);
+    text("Pulsa retroceso para volver al menu", 540, 700);
+    popMatrix();
+    controlDisplay();
+  }
+
+  void inGame() {
+    if (level < maxLevel) {
+      fill(255);
+      noStroke();
+      rect(0, 0, 900, 720);
+
+      stroke(15);
+      line(400, 0, 400, 720);
+      line(0, 124, 400, 124);
+      line(0, 248, 400, 248);
+      line(400, 432, 900, 432);
+
+      pushMatrix();
+      fill(0);
+      textSize(40);
+      textAlign(CENTER, CENTER);
+      text("Calcula el cambio:", 200, 60);
+      text(price + " €", 200, 182);
+      textSize(20);
+      text("Caso " + (level + 1) + "/" + maxLevel, 850, 20);
+      textSize(40);
+      popMatrix();
+
+      displayBills();
+      displayCoins();
+    } else {
+      if (level == maxLevel) {
+        score = (millis()-startTime)/1000;
+        s = score;
+        h = 0;
+        while (s >= 3600) {
+          h++;
+          if (h<10) {
+            hs = "0"+h;
+          } else {
+            hs = ""+h;
+          }
+          s -= 3600;
+        }
+        m = 0;
+        while (s >= 60) {
+          m++;
+          if (m<10) {
+            ms = "0"+m;
+          } else {
+            ms = ""+m;
+          }
+          s -= 60;
+        }
+        if (s<10) {
+          ss = "0"+s;
+        } else {
+          ss = ""+s;
+        }
+        
+        level ++;
+      }
+      endGame();
+    }
+    controlDisplay();
+  }
+
+  void setStartValues() {
     for (int i = 0; i < 6; i++) {
       coins[i] = 0;
     }
@@ -34,10 +195,10 @@ class CoinChange extends MiniGame {
     }
     for (int i = 1; i < 10; i++) {
       if (price < i * 5) {
-        while(true) {
+        while (true) {
           paid = (int)random(i, 11) * 5;
           paidCount = paid/5 - 1;
-          if(paid - price <= 19.25){
+          if (paid - price <= 19.25) {
             break;
           }
         }
@@ -45,52 +206,31 @@ class CoinChange extends MiniGame {
       }
     }
   }
-  
-  void reset(){}
-  void endGame(){}
-  void controlDisplay(){}
-  boolean isGameFinished(){return true;}
-  
-  void howToPlay(){
-  }
-  
-  void inGame(){
-  }
 
   void display() {
-    fill(255);
-    noStroke();
-    rect(0, 0, 900, 720);
-
-    stroke(15);
-    line(400, 0, 400, 720);
-    line(0, 124, 400, 124);
-    line(0, 248, 400, 248);
-    line(400, 432, 900, 432);
-
-    pushMatrix();
-    fill(0);
-    textSize(40);
-    textAlign(CENTER, CENTER);
-    text("Calcula el cambio:", 200, 60);
-    text(price + " €", 200, 182);
-    /*
-    circle(525, 528, twoD);
-     circle(525, 640, oneD);
-     circle(650, 528, fiftyD);
-     circle(650, 640, twentyD);
-     circle(775, 528, tenD);
-     circle(775, 640, fiveD);
-     */
-    popMatrix();
-
-    displayBills();
-    displayCoins();
+    if (start) {
+      if (timerFinished) {
+        if (startTimer) {
+          startTime = millis();
+          startTimer = false;
+        }
+        inGame();
+      } else {
+        countDown();
+      }
+    } else {
+      howToPlay();
+    }
   }
 
   void control(int keyPress) {
-    if (keyPress == 32) {
+    if (keyPress == ' ') {
       calculate();
+    } else if (keyPress == ENTER) {
+      if (!start) {
+        millis = millis();
+        start = true;
+      }
     }
   }
 
@@ -220,12 +360,14 @@ class CoinChange extends MiniGame {
   }
 
   private void calculate() {
-    float res = coins[0] * 2 + coins[1] + coins[2] * 0.5 + coins[3] * 0.2 + coins[4] * 0.1 + coins[5] * 0.05;
     pushMatrix();
+    float res = coins[0] * 2 + coins[1] + coins[2] * 0.5 + coins[3] * 0.2 + coins[4] * 0.1 + coins[5] * 0.05;
     textAlign(CENTER, CENTER);
-    
     if (res + price == paid) {
-      text("Ganaste", 1000, 360);
+      level++;
+      setStartValues();
+    } else {
+      fallos++;
     }
     popMatrix();
   }
