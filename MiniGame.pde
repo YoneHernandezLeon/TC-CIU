@@ -18,7 +18,7 @@ abstract class MiniGame {
     start = true -> inGame()
   
   */
-  abstract void display();
+  abstract void display(Palette p);
   
   
   /*
