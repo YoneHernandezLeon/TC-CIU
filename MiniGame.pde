@@ -84,22 +84,24 @@ abstract class MiniGame {
     countdownOn = true;
     stroke(0);
     textSize(50);
+    textAlign(CENTER,CENTER);
     if(millis - millis() <= -1000){
       if(millis - millis() <= -2000 ){
         if(millis - millis() <= -3000 ){
-          text("YA",400,400);
+          text("YA",450,340);
+          textAlign(LEFT);
           if(millis - millis() <= -3400 ){
             countdownOn = false;
             timerFinished = true;
           }
         } else{
-          text("1",400,400);
+          text("1",450,340);
         }
       } else {
-        text("2",400,400);
+        text("2",450,340);
       }
     } else {
-      text("3",400,400);   
+      text("3",450,340);   
     }
   }
   
