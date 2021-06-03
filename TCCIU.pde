@@ -16,9 +16,18 @@ boolean userLogged = false;
 boolean inGame = false;
 String userName = "";
 
+JSONArray appData;
+String dataPath;
+ManageUser mg;
+User currentUser;
+
 void setup(){
   size(1280,720);
   stroke(15);
+  
+  dataPath = "data/users.json";
+  appData = loadJSONArray(dataPath);
+  mg = new ManageUser(appData, dataPath);
   
   gameList[0] = new Sudoku("Sudoku");
   gameList[1] = new Memory("Memory", new Pulse(this));
@@ -93,7 +102,7 @@ void displayUser(){
   rect(910,320,350,350);
   fill(0);
   textSize(30);
-  text("Usuario1",910,710); // AQUI VA EL NOMBRE DEL USUARIO
+  text(currentUser.getName(),910,710); // AQUI VA EL NOMBRE DEL USUARIO
   popMatrix();
 
 }
@@ -166,8 +175,14 @@ void displayMinigames(){
   fill(0);
   text("P.A.", 440, 260);
   for(int i = 0; i < numberOfGames; i++){
-    text(gameList[i].getGameName(),250,300+40*i);
-    text(abs(gameScore[i]),440,300+40*i);
+    String gameName = gameList[i].getGameName();
+    int gameScore = currentUser.getScoreOf(gameName);
+    text(gameName,250,300+40*i);
+    if( gameScore == -1){
+      text(" -",440,300+40*i);
+    }else{
+      text(abs(gameScore),440,300+40*i);
+    }
   }
   text("P.A. = puntuacion maxima actual para cada minijuego", 15, 700);
   
@@ -267,13 +282,14 @@ void keyPressed(){
       }
     }
   } else {
-    if(keyCode == ENTER){
-        //Llamadas a crear o comprobar usuario 
-        userLogged = true;
-      }
-    if(key == BACKSPACE && userName.length() > 0){
-          userName = userName.substring(0, userName.length()-1);
-    } else {
+     if(keyCode == ENTER && userName.length() > 0){
+      currentUser = mg.login(userName);
+      userLogged = true;
+    }
+  
+    if(keyCode == BACKSPACE && userName.length() > 0){
+      userName = userName.substring(0, userName.length() - 1);
+    }else if(keyCode >= 32 && keyCode <= 94  && userName.length() < 26){
       userName += key;
     }
   }
@@ -295,8 +311,15 @@ void mousePressed(){
 void checkGame(){
   if(inGame &&  gameList[menuMinigamesIndex].isGameFinished()){
     println(gameList[menuMinigamesIndex].getScore());
-    if(gameScore[menuMinigamesIndex] < gameList[menuMinigamesIndex].getScore()){
-      gameScore[menuMinigamesIndex] = gameList[menuMinigamesIndex].getScore();
-    }
+    //if(gameScore[menuMinigamesIndex] < gameList[menuMinigamesIndex].getScore()){
+      currentUser.setScoreOf(gameList[menuMinigamesIndex].getScore(), gameList[menuMinigamesIndex].getGameName());
+    //}
   }
+}
+
+void exit() {
+  if(currentUser != null){
+    mg.saveUser(currentUser);
+  }
+  super.exit();
 }
