@@ -15,6 +15,8 @@ class CoinChange extends MiniGame {
   private int startTime, h, m, s, fallos;
   private String ohs="00", oms="00", oss="00";
   private String hs="00", ms="00", ss="00";
+  
+  PImage howto;
 
   CoinChange(String name) {
     this.score = 0;
@@ -23,6 +25,8 @@ class CoinChange extends MiniGame {
 
     coins = new int[6];
     this.setStartValues();
+    howto = loadImage("img/howto/coinimg.png");
+    howto.resize(426, 240);
   }
 
   void reset() {
@@ -116,6 +120,7 @@ class CoinChange extends MiniGame {
       "-En la parte derecha del juego encontrarás el bote con las monedas seleccionadas (arriba)\ny los botones para añadir o retirar monedas (abajo).\n"+
       "-Tu puntuacion final sera el tiempo que has tardado en completar 7 casos mas una\npenalizacion por cada fallo cometido.\n"
       , 15, 180);
+    image(howto, 237, 420);
     text("Pulsa enter para comenzar", 15, 700);
     text("Pulsa retroceso para volver al menu", 540, 700);
     popMatrix();
