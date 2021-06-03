@@ -16,6 +16,8 @@ class CoinChange extends MiniGame {
   private String ohs="00", oms="00", oss="00";
   private String hs="00", ms="00", ss="00";
   
+  private Palette p;
+  
   PImage howto;
 
   CoinChange(String name) {
@@ -92,7 +94,7 @@ class CoinChange extends MiniGame {
   void controlDisplay() {
     //rect(910,20,350,290);
     pushMatrix();
-    fill(0);
+    fill(p.r, p.g, p.b);
     textSize(20);
     textAlign(LEFT);
     text("Click izquierdo sobre una moneda\npara añadirla al bote.\nClick derecho sobre una moneda\npara retirarla del bote.\nPulsa espacio para confirmar\nel cambio.\n\nPulsa RETROCESO para abandonar\nla partida y volver al menu.", 915, 45);
@@ -106,7 +108,7 @@ class CoinChange extends MiniGame {
 
   void howToPlay() {
     pushMatrix();
-    fill(0);
+    fill(p.r, p.g, p.b);
     textSize(50);
     textAlign(CENTER, CENTER);
     text("CAMBIO DE MONEDAS", 450, 60);
@@ -129,18 +131,13 @@ class CoinChange extends MiniGame {
 
   void inGame() {
     if (level < maxLevel) {
-      fill(255);
-      noStroke();
-      rect(0, 0, 900, 720);
-
-      stroke(15);
       line(400, 0, 400, 720);
       line(0, 124, 400, 124);
       line(0, 248, 400, 248);
       line(400, 432, 900, 432);
 
       pushMatrix();
-      fill(0);
+      fill(p.r, p.g, p.b);
       textSize(40);
       textAlign(CENTER, CENTER);
       text("Calcula el cambio:", 200, 60);
@@ -212,7 +209,8 @@ class CoinChange extends MiniGame {
     }
   }
 
-  void display() {
+  void display(Palette p) {
+    this.p = p;
     if (start) {
       if (timerFinished) {
         if (startTimer) {
@@ -279,36 +277,37 @@ class CoinChange extends MiniGame {
     switch(paidCount) {
     case 0:
       rect(70, 419, 260, 130);
-      fill(0);
+      fill(p.r, p.g, p.b);
       text("5€", 200, 484);
       break;
     case 1:
       rect(70, 419, 260, 130);
-      fill(0);
+      fill(p.r, p.g, p.b);
       text("10€", 200, 484);
       break;
     case 2:
       rect(20, 309, 260, 130);
       rect(120, 529, 260, 130);
-      fill(0);
+      fill(p.r, p.g, p.b);
       text("10€", 150, 374);
       text("5€", 250, 594);
       break;
     case 3:
       rect(70, 419, 260, 130);
+      fill(p.r, p.g, p.b);
       text("20€", 200, 484);
       break;
     case 4:
       rect(20, 309, 260, 130);
       rect(120, 529, 260, 130);
-      fill(0);
+      fill(p.r, p.g, p.b);
       text("20€", 150, 374);
       text("5€", 250, 594);
       break;
     case 5:
       rect(20, 309, 260, 130);
       rect(120, 529, 260, 130);
-      fill(0);
+      fill(p.r, p.g, p.b);
       text("20€", 150, 374);
       text("10€", 250, 594);
       break;
@@ -316,7 +315,7 @@ class CoinChange extends MiniGame {
       rect(20, 269, 260, 130);
       rect(70, 419, 260, 130);
       rect(120, 569, 260, 130);
-      fill(0);
+      fill(p.r, p.g, p.b);
       text("20€", 150, 334);
       text("10€", 200, 484);
       text("5€", 250, 634);
@@ -324,7 +323,7 @@ class CoinChange extends MiniGame {
     case 7:
       rect(20, 309, 260, 130);
       rect(120, 529, 260, 130);
-      fill(0);
+      fill(p.r, p.g, p.b);
       text("20€", 150, 374);
       text("20€", 250, 594);
       break;
@@ -332,14 +331,14 @@ class CoinChange extends MiniGame {
       rect(20, 269, 260, 130);
       rect(70, 419, 260, 130);
       rect(120, 569, 260, 130);
-      fill(0);
+      fill(p.r, p.g, p.b);
       text("20€", 150, 334);
       text("20€", 200, 484);
       text("5€", 250, 634);
       break;
     case 9:
       rect(70, 419, 260, 130);
-      fill(0);
+      fill(p.r, p.g, p.b);
       text("50€", 200, 484);
       break;
     }
@@ -353,12 +352,12 @@ class CoinChange extends MiniGame {
       for (int j = 0; j < coins[i]; j++) {
         fill(240, 230, 140);
         circle(presult[i][0] + offset[j][0], presult[i][1] + offset[j][1], dim);
-        fill(0);
+        fill(p.r, p.g, p.b);
         text(coinLabel[i], presult[i][0] + offset[j][0], presult[i][1] + offset[j][1]);
       }
       fill(240, 230, 140);
       circle(pcoins[i][0], pcoins[i][1], dim);
-      fill(0);
+      fill(p.r, p.g, p.b);
       text(coinLabel[i], pcoins[i][0], pcoins[i][1]);
     }
     popMatrix();
