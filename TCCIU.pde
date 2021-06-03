@@ -131,6 +131,7 @@ void changeUser(){
   //Guardar usuario
   userName = "";
   userLogged = false;
+  mg.saveUser(currentUser);
   resetMenu();
 }
 
