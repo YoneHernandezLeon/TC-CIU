@@ -5,8 +5,6 @@ class CoinChange extends MiniGame {
   private final int[][] presult = {{483, 108}, {483, 324}, {649, 108}, {649, 324}, {815, 108}, {815, 324}};
   private final int[][] offset = {{-20, -20}, {20, -20}, {-20, 20}, {20, 20}, {0, 0}};
 
-  private final String[] coinLabel = {"2€", "1€", "50c", "20c", "10c", "5c"};
-
   private int[] coins;
   private float price;
   private int paid, paidCount, level, maxLevel;
@@ -55,7 +53,7 @@ class CoinChange extends MiniGame {
     coins = new int[6];
     this.setStartValues();
     howto = loadImage("img/howto/coinimg.png");
-    howto.resize(426, 240);
+    howto.resize(300, 240);
   }
 
   void reset() {
@@ -122,7 +120,6 @@ class CoinChange extends MiniGame {
   }
 
   void controlDisplay() {
-    //rect(910,20,350,290);
     pushMatrix();
     fill(p.r, p.g, p.b);
     textSize(20);
@@ -152,7 +149,7 @@ class CoinChange extends MiniGame {
       "-En la parte derecha del juego encontrarás el bote con las monedas seleccionadas (arriba)\ny los botones para añadir o retirar monedas (abajo).\n"+
       "-Tu puntuacion final sera el tiempo que has tardado en completar 7 casos mas una\npenalizacion por cada fallo cometido.\n"
       , 15, 180);
-    image(howto, 237, 420);
+    image(howto, 300, 420);
     text("Pulsa enter para comenzar", 15, 700);
     text("Pulsa retroceso para volver al menu", 540, 700);
     popMatrix();
