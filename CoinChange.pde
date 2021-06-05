@@ -182,10 +182,12 @@ class CoinChange extends MiniGame {
       textSize(40);
       popMatrix();
 
+      noStroke();
       shader(sh[palette]);
       displayBills();
       displayCoins();
       resetShader();
+      stroke(p.r, p.g, p.b);
       
     } else {
       if (level == maxLevel) {
@@ -382,6 +384,7 @@ class CoinChange extends MiniGame {
   }
   
   private PShape createCoin(PImage i){
+    noStroke();
     i.resize(dim, dim);
     PShape p = createShape(RECT, 0, 0, dim, dim);
     beginShape();
