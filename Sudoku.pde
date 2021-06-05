@@ -32,9 +32,9 @@ class Sudoku extends MiniGame {
     this.p = p;
     
     img0 = loadImage("img/howto/sudokuImg0.jpeg");
-    img0.resize(426, 240);
+    img0.resize(300, 240);
     img1 = loadImage("img/howto/sudokuImg1.jpeg");
-    img1.resize(426, 240);
+    img1.resize(300, 240);
   }
 
   void reset() {
@@ -158,8 +158,8 @@ class Sudoku extends MiniGame {
       "-Comienzas el juego con 5 vidas. Pierdes una vida cada vez que coloques un numero mal.\nSabras que un numero esta mal porque saldra en rojo. Si un numero sale en verde\nesto indica que es correcto.\n"+
       "-Si te quedas sin vidas pierdes. Si completas el sudoku con alguna vida restante tu\npuntuacion sera el tiempo que has tardado mas una penalizacion por las vidas perdidas.\n"
       , 15, 180);
-    image(img0, 15, 420);
-    image(img1, 450, 420);
+    image(img0, 100, 420);
+    image(img1, 500, 420);
     text("Pulsa enter para comenzar", 15, 700);
     text("Pulsa retroceso para volver al menu", 540, 700);
     popMatrix();
