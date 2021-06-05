@@ -36,7 +36,7 @@ int volume = 50, sound = 50, palette = 0;
 boolean volumeOption = false, soundOption = false, paletteOption = false, fontOption = false;
 
 void setup() {
-  size(1280, 720);
+  size(1280, 720, P2D);
   stroke(15);
 
   dataPath = "data/users.json";
@@ -129,11 +129,17 @@ void displayControlBox() {
 
 void displayUser() {
   pushMatrix();
-  noFill();
-  rect(910, 320, 350, 350);
-  fill(palettes[palette].r, palettes[palette].g, palettes[palette].b);
+  PImage img = loadImage(currentUser.getProfileImage());
+  img.resize(350, 350);
+  beginShape();
+  texture(img);
+  vertex(910,320,0,0);
+  vertex(1260,320,350,0);
+  vertex(1260,670,350,350);
+  vertex(910,670,0,350);
+  endShape(CLOSE);
   textSize(30);
-  text(currentUser.getName(), 910, 710); // AQUI VA EL NOMBRE DEL USUARIO
+  text(currentUser.getName(),910,710);
   popMatrix();
 }
 
@@ -161,6 +167,9 @@ void changeUser() {
   //Guardar usuario
   userName = "";
   userLogged = false;
+  currentUser.setPreference(volume, "Volume");
+  currentUser.setPreference(sound, "Sound");
+  currentUser.setPreference(palette, "Palette");
   mg.saveUser(currentUser);
   resetMenu();
 }
@@ -427,8 +436,9 @@ void keyPressed() {
   } else {
     if (keyCode == ENTER && userName.length() > 0) {
       currentUser = mg.login(userName);
-      //volume = userName.volume;
-      //palette = userName.palette;
+      volume = currentUser.getPreference("Volume");
+      sound = currentUser.getPreference("Sound");
+      palette = currentUser.getPreference("Palette");
       userLogged = true;
     }
 
@@ -463,6 +473,9 @@ void checkGame() {
 
 void exit() {
   if (currentUser != null) {
+    currentUser.setPreference(volume, "Volume");
+    currentUser.setPreference(sound, "Sound");
+    currentUser.setPreference(palette, "Palette");
     mg.saveUser(currentUser);
   }
   super.exit();
