@@ -18,7 +18,7 @@ abstract class MiniGame {
     start = true -> inGame()
   
   */
-  abstract void display(Palette p, int volume, int sound);
+  abstract void display(Palette p, int palette, int volume, int sound);
   
   
   /*
