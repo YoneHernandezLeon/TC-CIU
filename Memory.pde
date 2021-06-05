@@ -66,7 +66,7 @@ class Memory extends MiniGame{
     popMatrix();
   }
   
-  void display(Palette p,int volume, int sound){
+  void display(Palette p, int palette, int volume, int sound){
     this.sound = sound;
     this.p = p;
     if(!isGameLoose){
