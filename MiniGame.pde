@@ -82,7 +82,6 @@ abstract class MiniGame {
   */
   void countDown(){
     countdownOn = true;
-    stroke(0);
     textSize(50);
     textAlign(CENTER,CENTER);
     if(millis - millis() <= -1000){
