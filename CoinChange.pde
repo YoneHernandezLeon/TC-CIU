@@ -7,7 +7,7 @@ class CoinChange extends MiniGame {
 
   private int[] coins;
   private float price;
-  private int paid, paidCount, level, maxLevel;
+  private int paid, paidCount, level, maxLevel, palette;
 
   private boolean startTimer = true, failAdded = false;
   private int startTime, h, m, s, fallos;
@@ -21,9 +21,11 @@ class CoinChange extends MiniGame {
   
   private Palette p;
   
+  private PShader[] sh;
+  
   PImage howto;
 
-  CoinChange(String name) {
+  CoinChange(String name, int max) {
     this.score = 0;
     this.gameName = name;
     this.maxLevel = 7;
@@ -54,10 +56,14 @@ class CoinChange extends MiniGame {
     this.setStartValues();
     howto = loadImage("img/howto/coinimg.png");
     howto.resize(300, 240);
+    
+    sh = new PShader[max];
+    for(int i = 0; i < max; i++){
+      sh[i] = loadShader("shaders/texfrag" + i + ".glsl", "shaders/texvert.glsl");
+    }
   }
 
   void reset() {
-    print("reset\n");
     super.reset();
 
     score = 0;
@@ -70,6 +76,8 @@ class CoinChange extends MiniGame {
     startTimer = true;
     failAdded = false;
     setStartValues();
+    
+    resetShader();
   }
 
   void endGame() {
@@ -174,8 +182,11 @@ class CoinChange extends MiniGame {
       textSize(40);
       popMatrix();
 
+      shader(sh[palette]);
       displayBills();
       displayCoins();
+      resetShader();
+      
     } else {
       if (level == maxLevel) {
         score = (millis()-startTime)/1000;
@@ -222,7 +233,7 @@ class CoinChange extends MiniGame {
       price += 0.05;
       price = (float) round(price * 100) / 100;
     }
-    for (int i = 1; i < 10; i++) {
+    for (int i = 1; i <= 10; i++) {
       if (price < i * 5) {
         while (true) {
           paid = (int)random(i, 11) * 5;
@@ -236,8 +247,9 @@ class CoinChange extends MiniGame {
     }
   }
 
-  void display(Palette p, int volume, int sound) {
+  void display(Palette p, int palette, int volume, int sound) {
     this.p = p;
+    this.palette = palette;
     if (start) {
       if (timerFinished) {
         if (startTimer) {
@@ -324,8 +336,8 @@ class CoinChange extends MiniGame {
       shape(e10, 120, 519);
       break;
     case 6:
-      shape(e20, 20, 249);
-      shape(e10, 70, 409);
+      shape(e20, 20, 259);
+      shape(e10, 70, 414);
       shape(e5, 120, 569);
       break;
     case 7:
@@ -333,8 +345,8 @@ class CoinChange extends MiniGame {
       shape(e20, 120, 519);
       break;
     case 8:
-      shape(e20, 20, 249);
-      shape(e20, 70, 409);
+      shape(e20, 20, 259);
+      shape(e20, 70, 414);
       shape(e5, 120, 569);
       break;
     case 9:
@@ -371,21 +383,22 @@ class CoinChange extends MiniGame {
   
   private PShape createCoin(PImage i){
     i.resize(dim, dim);
+    noStroke();
     PShape p = createShape(RECT, 0, 0, dim, dim);
     beginShape();
-    print("coin\n");
     p.setTexture(i);
     endShape();
+    stroke(15);
     return p;
   }
   
   private PShape createBill(PImage i){
-    stroke(15);
-    PShape p = createShape(RECT, 0, 0, 260, 150);
+    noStroke();
+    PShape p = createShape(RECT, 0, 0, 260, 140);
     beginShape();
-    print("bill\n");
     p.setTexture(i);
     endShape();
+    stroke(15);
     return p;
   }
 }
