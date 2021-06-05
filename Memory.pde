@@ -2,16 +2,19 @@ import processing.sound.*;
 
 class Memory extends MiniGame{
   
-  boolean waiting, isGameLoose;
-  int nSounds;
-  ArrayList<myKey> keyList;
+  private boolean waiting, isGameLoose;
+  private int nSounds;
+  private ArrayList<myKey> keyList;
   
-  boolean displaySound, userKeyPress;
-  int currentSounds, solvedSounds, pressedKey;
-  int[] levelList;
-  myKey currentKey;
+  private boolean displaySound, userKeyPress;
+  private int currentSounds, solvedSounds, pressedKey;
+  private int[] levelList;
+  private myKey currentKey;
   
-  Pulse pulso;
+  private Pulse pulso;
+  private Palette p;
+  
+  private PImage img0, img1;
   
   Memory(String gameName, Pulse pulso){
     this.gameName = gameName;
@@ -25,6 +28,11 @@ class Memory extends MiniGame{
     displaySound = false;
     userKeyPress = false;
     isGameLoose = false;
+    
+    img0 = loadImage("img/howto/memoryImg0.jpeg");
+    img0.resize(426, 240);
+    img1 = loadImage("img/howto/memoryImg1.jpeg");
+    img1.resize(426, 240);
     
     createKeyList();
   }
@@ -42,7 +50,7 @@ class Memory extends MiniGame{
   }
   
   void endGame(){
-    fill(0);
+    fill(p.r, p.g, p.b);
     textSize(50);
     text("Has perdido con una racha de "+ score,15,300);
     text("Pulsa retroceso para volver al menu",15,700);
@@ -50,13 +58,14 @@ class Memory extends MiniGame{
   
   void controlDisplay(){
     pushMatrix();
-    fill(0);
+    fill(p.r, p.g, p.b);
     textSize(20);
     text("Click izquierdo sobre una tecla\npara seleccionarla como la\nsiguiente tecla de secuencia\n\nPulsa RETROCESO para abandonar\nla partida y volver al menu", 915, 40);
     popMatrix();
   }
   
-  void display(){
+  void display(Palette p){
+    this.p = p;
     if(!isGameLoose){
       if(start){
         if (timerFinished){
@@ -76,21 +85,24 @@ class Memory extends MiniGame{
   
   void howToPlay(){
     pushMatrix();
-    fill(0);
+    fill(p.r, p.g, p.b);
     textSize(50);
     textAlign(CENTER, CENTER);
     text("MEMORY",450,60);
     textSize(30);
     textAlign(LEFT);
-    text("Instrucciones",15,170);
+    text("Instrucciones",15,140);
     textSize(20);
     text(
-    "-Este minijuego consiste en escuchar y ver una secuencia de sonidos y luces y repetirla\npulsando las mismas teclas.\n"+
-    "-La puntuacion del juego esta definida por el numero de secuencias seguidas que\naciertes.\n"+
-    "-Tanto el sonido como la iluminacion se mantendran durante 1 segundo. Tras completar\ncorrectamente una secuencia habra una pausa de 1 segundo antes de comenzar la\nsiguiente.\n"
-    ,15,210);
+    "-Este minijuego consiste en escuchar y ver una secuencia de sonidos y luces y repetirla\npulsando las mismas teclas.La puntuacion del juego esta definida por el \nnumero de secuencias seguidas que aciertes.\n"+
+    "-Tanto el sonido como la iluminacion se mantendran durante 1 segundo. Tras completar\ncorrectamente una secuencia habra una pausa de 1 segundo antes de comenzar la\nsiguiente. Se indicara con simbolo de \"pause\" cuando el usuario se encuentre a la espera\nde la secuencia y un simbolo de \"play\" cuando el usuario tenga que clickar la secuencia"
+    ,15,180);
     text("Pulsa enter para comenzar", 15, 700);
     text("Pulsa retroceso para volver al menu", 540, 700);
+    
+    image(img0, 15, 420);
+    image(img1, 450, 420);
+    
     popMatrix();
     controlDisplay();
   }
@@ -143,13 +155,20 @@ class Memory extends MiniGame{
   void displayText(){
     pushMatrix();
     textSize(30);
-    fill(0);
+    fill(p.r, p.g, p.b);
     text("Racha = "+score,20,65);
     textSize(30);
     if(waiting){
-      text("Pulsa las teclas en el orden correcto",350,65);  
-    } else {
-      text("Presta atencion a la secuencia",350,65);  
+      pushMatrix();
+      //rotate(PI/2.0);
+      triangle(500,75,500,25,550,50);
+      popMatrix();
+      //text("Pulsa las teclas en el orden correcto",350,65);  
+    } else {      
+      rect(500,35,20,50,20,20,20,20);
+      rect(540,35,20,50,20,20,20,20);
+      //text("Presta atencion a la secuencia",350,65);  
+      
     }
     popMatrix();
   }

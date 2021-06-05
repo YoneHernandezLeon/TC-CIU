@@ -1,4 +1,4 @@
-int numberOfGames = 3, menuIndex = 0, menuMinigamesIndex = 0, menuOptionsIndex= 0, menuUserIndex = 0, maxPalette = 4;
+int numberOfGames = 3, menuIndex = 0, menuMinigamesIndex = 0, menuOptionsIndex= 0, menuUserIndex = 0, maxMenu =6, maxMinigames = 3, maxOptions = 2, maxUser = 0, maxPalette = 4;
 int menuSelected = -1;
 /*
 -1 = Menu principal
@@ -10,7 +10,9 @@ int menuSelected = -1;
  */
 
 MiniGame[] gameList = new MiniGame[numberOfGames];
+String[] gameListScoreText = new String[numberOfGames];
 Palette[] palettes = new Palette[maxPalette];
+String[] palettesText = new String[maxPalette];
 int[] gameScore = new int[numberOfGames];
 
 boolean userLogged = false;
@@ -32,15 +34,24 @@ void setup() {
   dataPath = "data/users.json";
   appData = loadJSONArray(dataPath);
   mg = new ManageUser(appData, dataPath);
-
-  gameList[0] = new Sudoku("Sudoku");
-  gameList[1] = new Memory("Memory", new Pulse(this));
-  gameList[2] = new CoinChange("Coins");
-
+  
   palettes[0] = new Palette("img/palette/plantilla1.png", 0, 0, 0);
+  palettesText[0] = "Normal";
   palettes[1] = new Palette("img/palette/plantilla2.png", 0, 0, 0);
+  palettesText[1] = "Frios";
   palettes[2] = new Palette("img/palette/plantilla3.png", 0, 0, 0);
+  palettesText[2] = "Calidos";
   palettes[3] = new Palette("img/palette/plantilla4.png", 255, 255, 255);
+  palettesText[3] = "Invertido";
+
+  gameList[0] = new Sudoku("Sudoku", palettes[0]);
+  gameListScoreText[0] = "Segundos";
+  gameList[1] = new Memory("Memory", new Pulse(this));
+  gameListScoreText[1] = "Racha de";
+  gameList[2] = new CoinChange("Coins");
+  gameListScoreText[2] = "Segundos";
+
+  
 }
 
 void draw() {
@@ -76,7 +87,7 @@ void draw() {
         break;
       }
     } else {
-      gameList[menuMinigamesIndex].display();
+      gameList[menuMinigamesIndex].display(palettes[palette]);
     }
   } else {
     displayLogin();
@@ -100,7 +111,11 @@ void displayControlBox() {
   pushMatrix();
   noFill();
   rect(910, 20, 350, 290);
-
+  if(!inGame){
+    fill(palettes[palette].r, palettes[palette].g, palettes[palette].b);
+    textSize(20);
+    text("Usa las flechas arriba y abajo para\nmoverte por los distintos menus.\nPulsa las flechas izquierda y\nderecha para aumentar o disminuir\nlas opciones que lo requieran\nPulsa ENTER para acceder al\nmenu o juego\nPulsa RETROCESO para volver al\nmenu", 915, 40);
+  }
   popMatrix();
 }
 
@@ -163,6 +178,7 @@ void displayMainMenu() {
 void displayMainBox() {
   noFill();
   strokeWeight(5);
+  stroke(palettes[palette].r, palettes[palette].g, palettes[palette].b);
   rect(240, 265+menuIndex*40, 300, 45);
 }
 
@@ -171,7 +187,7 @@ void displayMainBox() {
 void displayMinigames() {
   textSize(30);
   fill(palettes[palette].r, palettes[palette].g, palettes[palette].b);
-  text("P.A.", 440, 260);
+  text("Puntuación", 440, 260);
   for (int i = 0; i < numberOfGames; i++) {
     String gameName = gameList[i].getGameName();
     int gameScore = currentUser.getScoreOf(gameName);
@@ -179,10 +195,13 @@ void displayMinigames() {
     if ( gameScore == -1) {
       text(" -", 440, 300+40*i);
     } else {
-      text(abs(gameScore), 440, 300+40*i);
+      if(i == 1){
+        text(gameListScoreText[i]+" "+abs(gameScore), 440, 300+40*i);
+      } else {
+        text(abs(gameScore)+" "+gameListScoreText[i], 440, 300+40*i);
+      }  
     }
   }
-  text("P.A. = puntuacion maxima actual para cada minijuego", 15, 700);
 
 
   displayMinigameBox();
@@ -190,7 +209,8 @@ void displayMinigames() {
 void displayMinigameBox() {
   noFill();
   strokeWeight(5);
-  rect(240, 265+menuMinigamesIndex*40, 300, 45);
+  stroke(palettes[palette].r, palettes[palette].g, palettes[palette].b);
+  rect(240, 265+menuMinigamesIndex*40, 500, 45);
 }
 
 
@@ -199,18 +219,24 @@ void displayOptions() {
   text("Opciones", 320, 250);
   textSize(30);
   text("Volumen", 250, 300);
+  textSize(20);
+  text("<-",250,337);
+  text("->",250+50+barLimit,337);
   noFill();
-  rect(250, 320, barLimit, 20);
+  rect(290, 320, barLimit, 20);
   fill(palettes[palette].r, palettes[palette].g, palettes[palette].b);
-  rect(250, 320, volume*3, 20);
+  rect(290, 320, volume*3, 20);
   fill(palettes[palette].r, palettes[palette].g, palettes[palette].b);
+  textSize(30);
   text("Cambiar paleta de colores", 250, 390);
-  text("Cambiar fuente de letra", 250, 430);
+  textSize(20);
+  text("<-  "+palettesText[palette]+ "  ->",250,430);
   displayOptionsBox();
 }
 
 void displayOptionsBox() {
   noFill();
+  stroke(palettes[palette].r, palettes[palette].g, palettes[palette].b);
   strokeWeight(5);
   if (menuOptionsIndex == 0) {
     rect(240, 265, 390, 45);
@@ -222,7 +248,7 @@ void displayOptionsBox() {
     volumeOption = false;
     paletteOption = true;
   } else {
-    rect(240, 315+menuOptionsIndex*40, 390, 45);
+    rect(240, 355+menuOptionsIndex*40, 390, 45);
     volumeOption = false;
     paletteOption = false;
   }
@@ -245,19 +271,19 @@ void currentIndexUp() {
   case -1:
     menuIndex--;
     if (menuIndex == -1) {
-      menuIndex = 5;
+      menuIndex = maxMenu-1;
     } 
     break;
   case 0:
     menuMinigamesIndex--;
     if (menuMinigamesIndex == -1) {
-      menuMinigamesIndex = 2;
+      menuMinigamesIndex = maxMinigames-1;
     }
     break;
   case 3:
     menuOptionsIndex--;
     if (menuOptionsIndex == -1) {
-      menuOptionsIndex = 2;
+      menuOptionsIndex = maxOptions-1;
     }
     break;
   }
@@ -268,19 +294,19 @@ void currentIndexDown() {
   case -1:
     menuIndex++;
 
-    if (menuIndex == 6) {
+    if (menuIndex == maxMenu) {
       menuIndex = 0;
     } 
     break;
   case 0:
     menuMinigamesIndex++;
-    if (menuMinigamesIndex == 3) {
+    if (menuMinigamesIndex == maxMinigames) {
       menuMinigamesIndex = 0;
     }
     break;
   case 3:
     menuOptionsIndex++;
-    if (menuOptionsIndex == 3) {
+    if (menuOptionsIndex == maxOptions) {
       menuOptionsIndex = 0;
     }
     break;
@@ -360,6 +386,8 @@ void keyPressed() {
   } else {
     if (keyCode == ENTER && userName.length() > 0) {
       currentUser = mg.login(userName);
+      //volume = userName.volume;
+      //palette = userName.palette;
       userLogged = true;
     }
 

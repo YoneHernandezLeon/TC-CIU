@@ -22,10 +22,19 @@ class Sudoku extends MiniGame {
   String ohs="00", oms="00", oss="00";
   String hs="00", ms="00", ss="00";
   boolean startTimer = true;
+  
+  Palette p;
+  
+  private PImage img0, img1;
 
-
-  Sudoku(String gameName) {
+  Sudoku(String gameName, Palette p) {
     this.gameName = gameName;
+    this.p = p;
+    
+    img0 = loadImage("img/howto/sudokuImg0.jpeg");
+    img0.resize(426, 240);
+    img1 = loadImage("img/howto/sudokuImg1.jpeg");
+    img1.resize(426, 240);
   }
 
   void reset() {
@@ -50,7 +59,7 @@ class Sudoku extends MiniGame {
   void controlDisplay() {
     //rect(910,20,350,290);
     pushMatrix();
-    fill(0);
+    fill(p.r, p.g, p.b);
     textSize(20);
     text("Click izquierdo sobre una casilla\npara seleccionarla\n\nUsa los numeros del teclado\npara introducir un numero en\nla casilla seleccionada\n\nPulsa RETROCESO para abandonar\nla partida y volver al menu", 915, 40);
 
@@ -116,7 +125,8 @@ class Sudoku extends MiniGame {
     text("Pulsa retroceso para volver al menu",15,700);
     popMatrix();
   }
-  void display() {
+  void display(Palette p) {
+    this.p = p;
     if (start) {
       if (timerFinished) {
         if (startTimer) {
@@ -135,19 +145,21 @@ class Sudoku extends MiniGame {
 
   void howToPlay() {
     pushMatrix();
-    fill(0);
+    fill(p.r, p.g, p.b);
     textSize(50);
     textAlign(CENTER, CENTER);
     text("SUDOKU", 450, 60);
     textSize(30);
     textAlign(LEFT);
-    text("Instrucciones", 15, 170);
+    text("Instrucciones", 15, 140);
     textSize(20);
     text(
-      "-Este minijuego consiste en colocar los numero del 1 al 9 en cada fila, cada columna y en\ncada cuadrante 3x3. En cada una de estas designaciones los numero no se pueden repetir.\n"+
+      "-Este minijuego consiste en colocar los numeros del 1 al 9 en cada fila, cada columna y en\ncada cuadrante 3x3. En cada una de estas designaciones los numero no se pueden repetir.\n"+
       "-Comienzas el juego con 5 vidas. Pierdes una vida cada vez que coloques un numero mal.\nSabras que un numero esta mal porque saldra en rojo. Si un numero sale en verde\nesto indica que es correcto.\n"+
       "-Si te quedas sin vidas pierdes. Si completas el sudoku con alguna vida restante tu\npuntuacion sera el tiempo que has tardado mas una penalizacion por las vidas perdidas.\n"
-      , 15, 210);
+      , 15, 180);
+    image(img0, 15, 420);
+    image(img1, 450, 420);
     text("Pulsa enter para comenzar", 15, 700);
     text("Pulsa retroceso para volver al menu", 540, 700);
     popMatrix();
@@ -192,7 +204,7 @@ class Sudoku extends MiniGame {
     pushMatrix();
     noFill();
     strokeWeight(5);
-    stroke(0);
+    stroke(p.r, p.g, p.b);
     rect(0, 90, 300, 210);
     rect(300, 90, 300, 210);
     rect(600, 90, 300, 210);
@@ -245,11 +257,12 @@ class Sudoku extends MiniGame {
       ss = ""+s;
     }
 
-
-    fill(255, 0, 0);
+    fill(p.r, p.g, p.b);
+    //fill(255, 0, 0);
     text("Vidas: "+(5-fallos), 20, 65);
 
-    fill(0, 0, 255);
+    fill(p.r, p.g, p.b);
+    //fill(0, 0, 255);
     text(hs+":"+ms+":"+ss, 650, 65);
     popMatrix();
   }
@@ -319,6 +332,7 @@ class Sudoku extends MiniGame {
         success = selected.getPieceEnded();
         if (!success && !gameFinished) {
           fallos++;
+          println(fallos);
         }
       } 
       catch(NullPointerException e) {
@@ -391,7 +405,7 @@ class Sudoku extends MiniGame {
   void createBoard() {
     for (int i = 0; i < 9; i++) {
       for (int j = 0; j < 9; j++) {
-        board[i][j] = new Piece(0+j*100, 90+i*70, 100, 70, current[i][j], solution[i][j]);
+        board[i][j] = new Piece(0+j*100, 90+i*70, 100, 70, current[i][j], solution[i][j], p);
       }
     }
   }
@@ -409,8 +423,10 @@ class Sudoku extends MiniGame {
 class Piece {
   int x, y, xWidth, yHeight, v, solution;
   boolean pieceEnded=false, isClicked = false, beginning;
+  Palette p;
 
-  Piece(int x, int y, int xWidth, int yHeight, int v, int solution) {
+  Piece(int x, int y, int xWidth, int yHeight, int v, int solution, Palette p) {
+    this.p = p;
     this.x = x;
     this.y = y;
     this.xWidth = xWidth;
@@ -431,7 +447,7 @@ class Piece {
     textSize(50);
     rect(x, y, xWidth, yHeight);
     if (beginning) {
-      fill(0, 255, 150);
+      fill(p.r, p.g, p.b);
       text(""+v, x+0.35*xWidth, y+0.75*yHeight);
     } else {
       if (pieceEnded) {
