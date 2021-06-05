@@ -255,6 +255,11 @@ void displayOptionsBox() {
 }
 
 void displayCredits() {
+  textSize(40);
+  text("Aplicación desarrollada por", 250, 250);
+  strokeWeight(5);
+  textSize(30);
+  text("Yone Hernández León\nCarlos Javier Martín Perdomo\nFrancisco Jose Santana Sosa", 250, 300);
 }
 
 
