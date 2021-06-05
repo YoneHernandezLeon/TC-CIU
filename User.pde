@@ -2,12 +2,13 @@ class User{
   private final int ID;
   private String name;
   private int[] score = {-1, -1, -1};
+  private int[] preferences = {50, 50, 0};
   private String profileImage;
   
   public User(int ID, String name){
     this.ID = ID;
     this.name = name;
-    this.profileImage = "";
+    this.profileImage = "img/users/default.jpeg";
   }
   
   public void setName(String name){
@@ -28,6 +29,22 @@ class User{
         break;
       case "Memory":
         if(newScore > score[2] || score[2] == -1) score[2] = newScore;
+        break;
+      default:
+        break;
+    }
+  }
+  
+  public void setPreference(int value, String preference){
+    switch(preference){
+      case "Volume":
+        preferences[0] = value;
+        break;
+      case "Sound":
+        preferences[1] = value;
+        break;
+      case "Palette":
+        preferences[2] = value;
         break;
       default:
         break;
@@ -58,6 +75,24 @@ class User{
         break;
     }
     return score[index];
+  }
+  
+  public int getPreference(String preference){
+    int index = 0;
+    switch(preference){
+      case "Volume":
+        index = 0;
+        break;
+      case "Sound":
+        index = 1;
+        break;
+      case "Palette":
+        index = 2;
+        break;
+      default:
+        break;
+    }
+    return preferences[index];  
   }
   
   public int getID(){
