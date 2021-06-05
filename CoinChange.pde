@@ -383,22 +383,18 @@ class CoinChange extends MiniGame {
   
   private PShape createCoin(PImage i){
     i.resize(dim, dim);
-    noStroke();
     PShape p = createShape(RECT, 0, 0, dim, dim);
     beginShape();
     p.setTexture(i);
     endShape();
-    stroke(15);
     return p;
   }
   
   private PShape createBill(PImage i){
-    noStroke();
     PShape p = createShape(RECT, 0, 0, 260, 140);
     beginShape();
     p.setTexture(i);
     endShape();
-    stroke(15);
     return p;
   }
 }
