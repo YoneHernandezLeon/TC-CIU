@@ -1,4 +1,5 @@
-int numberOfGames = 3, menuIndex = 0, menuMinigamesIndex = 0, menuOptionsIndex= 0, menuUserIndex = 0, maxMenu =6, maxMinigames = 3, maxOptions = 2, maxUser = 0, maxPalette = 4;
+int menuIndex = 0, menuMinigamesIndex = 0, menuOptionsIndex= 0, menuUserIndex = 0;
+int maxMenu = 6,   maxMinigames = 3,       maxOptions = 3,      maxUser = 0;
 int menuSelected = -1;
 /*
 -1 = Menu principal
@@ -9,23 +10,30 @@ int menuSelected = -1;
  4  = Salir
  */
 
+int numberOfGames = 3;
 MiniGame[] gameList = new MiniGame[numberOfGames];
 String[] gameListScoreText = new String[numberOfGames];
+int[] gameScore = new int[numberOfGames];
+
+
+int maxPalette = 4;
 Palette[] palettes = new Palette[maxPalette];
 String[] palettesText = new String[maxPalette];
-int[] gameScore = new int[numberOfGames];
+
 
 boolean userLogged = false;
 boolean inGame = false;
-String userName = "";
+
 
 JSONArray appData;
 String dataPath;
 ManageUser mg;
 User currentUser;
+String userName = "";
 
-int barLimit = 300, volume = 50, palette = 0;
-boolean volumeOption = false, paletteOption = false, fontOption = false;
+int barLimit = 300;
+int volume = 50, sound = 50, palette = 0;
+boolean volumeOption = false, soundOption = false, paletteOption = false, fontOption = false;
 
 void setup() {
   size(1280, 720);
@@ -87,7 +95,7 @@ void draw() {
         break;
       }
     } else {
-      gameList[menuMinigamesIndex].display(palettes[palette]);
+      gameList[menuMinigamesIndex].display(palettes[palette], volume, sound);
     }
   } else {
     displayLogin();
@@ -210,7 +218,7 @@ void displayMinigameBox() {
   noFill();
   strokeWeight(5);
   stroke(palettes[palette].r, palettes[palette].g, palettes[palette].b);
-  rect(240, 265+menuMinigamesIndex*40, 500, 45);
+  rect(240, 265+menuMinigamesIndex*40, 150, 45);
 }
 
 
@@ -218,7 +226,7 @@ void displayOptions() {
   textSize(40);
   text("Opciones", 320, 250);
   textSize(30);
-  text("Volumen", 250, 300);
+  text("Volumen de musica", 250, 300);
   textSize(20);
   text("<-",250,337);
   text("->",250+50+barLimit,337);
@@ -226,11 +234,21 @@ void displayOptions() {
   rect(290, 320, barLimit, 20);
   fill(palettes[palette].r, palettes[palette].g, palettes[palette].b);
   rect(290, 320, volume*3, 20);
+  fill(palettes[palette].r, palettes[palette].g, palettes[palette].b);  textSize(30);
+  
+  text("Volumen de sonido", 250, 390);
+  textSize(20);
+  text("<-",250,427);
+  text("->",250+50+barLimit,427);
+  noFill();
+  rect(290, 410, barLimit, 20);
+  fill(palettes[palette].r, palettes[palette].g, palettes[palette].b);
+  rect(290, 410, sound*3, 20);
   fill(palettes[palette].r, palettes[palette].g, palettes[palette].b);
   textSize(30);
-  text("Cambiar paleta de colores", 250, 390);
+  text("Cambiar paleta de colores", 250, 480);
   textSize(20);
-  text("<-  "+palettesText[palette]+ "  ->",250,430);
+  text("<-  "+palettesText[palette]+ "  ->",250,520);
   displayOptionsBox();
 }
 
@@ -241,15 +259,24 @@ void displayOptionsBox() {
   if (menuOptionsIndex == 0) {
     rect(240, 265, 390, 45);
     volumeOption = true;
+    soundOption = false;
     paletteOption = false;
   } else if (menuOptionsIndex == 1) {
-    //Opciones para paleta y fuente
     rect(240, 315+menuOptionsIndex*40, 390, 45);
     volumeOption = false;
+    soundOption = true;
+    paletteOption = false;
+    
+  } else if (menuOptionsIndex == 2){
+    //Opciones para paleta y fuente
+    rect(240, 365+menuOptionsIndex*40, 390, 45);
+    volumeOption = false;
+    soundOption = false;
     paletteOption = true;
   } else {
     rect(240, 355+menuOptionsIndex*40, 390, 45);
     volumeOption = false;
+    soundOption = false;
     paletteOption = false;
   }
 }
@@ -371,6 +398,15 @@ void keyPressed() {
         if(keyCode == RIGHT && volumeOption){
           volume++;
           if(volume>100){volume=100;}
+        }
+        
+        if(keyCode == LEFT && soundOption){
+          sound--;
+          if(sound<0){sound=0;}
+        }
+        if(keyCode == RIGHT && soundOption){
+          sound++;
+          if(sound>100){sound=100;}
         }
         
         if(keyCode == LEFT && paletteOption){

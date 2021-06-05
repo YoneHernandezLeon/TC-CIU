@@ -16,6 +16,8 @@ class Memory extends MiniGame{
   
   private PImage img0, img1;
   
+  private int sound;
+  
   Memory(String gameName, Pulse pulso){
     this.gameName = gameName;
     this.pulso = pulso;
@@ -64,7 +66,8 @@ class Memory extends MiniGame{
     popMatrix();
   }
   
-  void display(Palette p){
+  void display(Palette p,int volume, int sound){
+    this.sound = sound;
     this.p = p;
     if(!isGameLoose){
       if(start){
@@ -114,7 +117,7 @@ class Memory extends MiniGame{
     
     
     if(displaySound){
-      pulso.amp(0.5);
+      pulso.amp((float)sound/100.0);
       pulso.freq(currentKey.getFreq());
       pulso.play();
       delay(1000);

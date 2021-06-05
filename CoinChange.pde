@@ -236,7 +236,7 @@ class CoinChange extends MiniGame {
     }
   }
 
-  void display(Palette p) {
+  void display(Palette p, int volume, int sound) {
     this.p = p;
     if (start) {
       if (timerFinished) {
