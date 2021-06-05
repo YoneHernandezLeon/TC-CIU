@@ -30,9 +30,9 @@ class Memory extends MiniGame{
     isGameLoose = false;
     
     img0 = loadImage("img/howto/memoryImg0.jpeg");
-    img0.resize(426, 240);
+    img0.resize(300, 240);
     img1 = loadImage("img/howto/memoryImg1.jpeg");
-    img1.resize(426, 240);
+    img1.resize(300, 240);
     
     createKeyList();
   }
@@ -100,8 +100,8 @@ class Memory extends MiniGame{
     text("Pulsa enter para comenzar", 15, 700);
     text("Pulsa retroceso para volver al menu", 540, 700);
     
-    image(img0, 15, 420);
-    image(img1, 450, 420);
+    image(img0, 100, 420);
+    image(img1, 500, 420);
     
     popMatrix();
     controlDisplay();
