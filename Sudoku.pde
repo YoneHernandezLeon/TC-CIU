@@ -28,6 +28,7 @@ class Sudoku extends MiniGame {
   private PImage img0, img1;
 
   Sudoku(String gameName, Palette p) {
+    score = 3600;
     this.gameName = gameName;
     this.p = p;
     
@@ -73,7 +74,7 @@ class Sudoku extends MiniGame {
       ohs=hs; 
       oms=ms; 
       oss=ss;
-      score = score+(fallos*60);
+      score = + score+(fallos*60);
       failAdded = true;
     }
     text("Tiempo acumulado: " +ohs+":"+oms+":"+oss, 100, 250);
@@ -87,23 +88,25 @@ class Sudoku extends MiniGame {
     h = 0;
     while (s >= 3600) {
       h++;
-      if (h<10) {
-        hs = "0"+h;
-      } else {
-        hs = ""+h;
-      }
       s -= 3600;
     }
+    if (h<10) {
+      hs = "0"+h;
+    } else {
+      hs = ""+h;
+    }
+    
     m = 0;
     while (s >= 60) {
       m++;
-      if (m<10) {
-        ms = "0"+m;
-      } else {
-        ms = ""+m;
-      }
       s -= 60;
     }
+    if (m<10) {
+      ms = "0"+m;
+    } else {
+      ms = ""+m;
+    }
+    
     if (s<10) {
       ss = "0"+s;
     } else {
@@ -229,28 +232,30 @@ class Sudoku extends MiniGame {
      */
 
 
-    score = (millis()-startTime)/1000;
+    score = (millis()-startTime)/1000 + 3400;
     s = score;
     h = 0;
     while (s >= 3600) {
       h++;
-      if (h<10) {
-        hs = "0"+h;
-      } else {
-        hs = ""+h;
-      }
       s -= 3600;
     }
+    if (h<10) {
+      hs = "0"+h;
+    } else {
+      hs = ""+h;
+    }
+      
     m = 0;
     while (s >= 60) {
       m++;
-      if (m<10) {
-        ms = "0"+m;
-      } else {
-        ms = ""+m;
-      }
       s -= 60;
     }
+    if (m<10) {
+      ms = "0"+m;
+    } else {
+      ms = ""+m;
+    }
+    
     if (s<10) {
       ss = "0"+s;
     } else {

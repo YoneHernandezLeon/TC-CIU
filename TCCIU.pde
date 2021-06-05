@@ -36,7 +36,7 @@ int volume = 50, sound = 50, palette = 0;
 boolean volumeOption = false, soundOption = false, paletteOption = false, fontOption = false;
 
 void setup() {
-  size(1280, 720, P2D);
+  size(1280, 720);
   stroke(15);
 
   dataPath = "data/users.json";
@@ -131,13 +131,8 @@ void displayUser() {
   pushMatrix();
   PImage img = loadImage(currentUser.getProfileImage());
   img.resize(350, 350);
-  beginShape();
-  texture(img);
-  vertex(910,320,0,0);
-  vertex(1260,320,350,0);
-  vertex(1260,670,350,350);
-  vertex(910,670,0,350);
-  endShape(CLOSE);
+  rect(908,318,352,352);
+  image(img, 910,320);
   textSize(30);
   text(currentUser.getName(),910,710);
   popMatrix();
@@ -292,10 +287,13 @@ void displayOptionsBox() {
 
 void displayCredits() {
   textSize(40);
-  text("Aplicación desarrollada por", 250, 250);
+  textAlign(CENTER);
+  text("Aplicación desarrollada por:", 450, 250);
   strokeWeight(5);
   textSize(30);
-  text("Yone Hernández León\nCarlos Javier Martín Perdomo\nFrancisco Jose Santana Sosa", 250, 300);
+  textAlign(CENTER);
+  text("Yone Hernández León\nCarlos Javier Martín Perdomo\nFrancisco Jose Santana Sosa\n\nCon la colaboración musical de:\nNicolás Almeida Ramírez", 450, 300);
+  textAlign(LEFT);
 }
 
 
