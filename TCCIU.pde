@@ -16,7 +16,7 @@ String[] gameListScoreText = new String[numberOfGames];
 int[] gameScore = new int[numberOfGames];
 
 
-int maxPalette = 4;
+int maxPalette = 5;
 Palette[] palettes = new Palette[maxPalette];
 String[] palettesText = new String[maxPalette];
 
@@ -36,27 +36,29 @@ int volume = 50, sound = 50, palette = 0;
 boolean volumeOption = false, soundOption = false, paletteOption = false, fontOption = false;
 
 void setup() {
-  size(1280, 720);
+  size(1280, 720, P2D);
   stroke(15);
 
   dataPath = "data/users.json";
   appData = loadJSONArray(dataPath);
   mg = new ManageUser(appData, dataPath);
   
-  palettes[0] = new Palette("img/palette/plantilla1.png", 0, 0, 0);
-  palettesText[0] = "Normal";
-  palettes[1] = new Palette("img/palette/plantilla2.png", 0, 0, 0);
-  palettesText[1] = "Frios";
-  palettes[2] = new Palette("img/palette/plantilla3.png", 0, 0, 0);
-  palettesText[2] = "Calidos";
-  palettes[3] = new Palette("img/palette/plantilla4.png", 255, 255, 255);
-  palettesText[3] = "Invertido";
+  palettes[0] = new Palette("img/palette/classic.png", 0, 0, 0);
+  palettesText[0] = "Clásico";
+  palettes[1] = new Palette("img/palette/warm.png", 75, 0, 0);
+  palettesText[1] = "Cálido";
+  palettes[2] = new Palette("img/palette/woods.png", 69, 35, 0);
+  palettesText[2] = "Bosque";
+  palettes[3] = new Palette("img/palette/cool.png", 0, 0, 75);
+  palettesText[3] = "Frío";
+  palettes[4] = new Palette("img/palette/negative.png", 255, 255, 255);
+  palettesText[4] = "Negativo";
 
   gameList[0] = new Sudoku("Sudoku", palettes[0]);
   gameListScoreText[0] = "Segundos";
   gameList[1] = new Memory("Memory", new Pulse(this));
   gameListScoreText[1] = "Racha de";
-  gameList[2] = new CoinChange("Coins");
+  gameList[2] = new CoinChange("Coins", maxPalette);
   gameListScoreText[2] = "Segundos";
 
   
@@ -95,7 +97,7 @@ void draw() {
         break;
       }
     } else {
-      gameList[menuMinigamesIndex].display(palettes[palette], volume, sound);
+      gameList[menuMinigamesIndex].display(palettes[palette], palette, volume, sound);
     }
   } else {
     displayLogin();
@@ -122,7 +124,7 @@ void displayControlBox() {
   if(!inGame){
     fill(palettes[palette].r, palettes[palette].g, palettes[palette].b);
     textSize(20);
-    text("Usa las flechas arriba y abajo para\nmoverte por los distintos menus.\nPulsa las flechas izquierda y\nderecha para aumentar o disminuir\nlas opciones que lo requieran\nPulsa ENTER para acceder al\nmenu o juego\nPulsa RETROCESO para volver al\nmenu", 915, 40);
+    text("Usa las flechas arriba y abajo para\nmoverte por los distintos menus.\nPulsa las flechas izquierda y\nderecha para aumentar o disminuir\nlas opciones que lo requieran\nPulsa ENTER para acceder al\nmenu o juego\nPulsa RETROCESO para volver al\nmenu", 915, 45);
   }
   popMatrix();
 }
@@ -134,7 +136,7 @@ void displayUser() {
   rect(908,318,352,352);
   image(img, 910,320);
   textSize(30);
-  text(currentUser.getName(),910,710);
+  text(currentUser.getName(),910,703);
   popMatrix();
 }
 
@@ -261,19 +263,19 @@ void displayOptionsBox() {
   stroke(palettes[palette].r, palettes[palette].g, palettes[palette].b);
   strokeWeight(5);
   if (menuOptionsIndex == 0) {
-    rect(240, 265, 390, 45);
+    rect(240, 265, 400, 45);
     volumeOption = true;
     soundOption = false;
     paletteOption = false;
   } else if (menuOptionsIndex == 1) {
-    rect(240, 315+menuOptionsIndex*40, 390, 45);
+    rect(240, 315+menuOptionsIndex*40, 400, 45);
     volumeOption = false;
     soundOption = true;
     paletteOption = false;
     
   } else if (menuOptionsIndex == 2){
     //Opciones para paleta y fuente
-    rect(240, 365+menuOptionsIndex*40, 390, 45);
+    rect(240, 365+menuOptionsIndex*40, 400, 45);
     volumeOption = false;
     soundOption = false;
     paletteOption = true;
