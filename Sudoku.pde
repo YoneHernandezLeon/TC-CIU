@@ -61,7 +61,7 @@ class Sudoku extends MiniGame {
     pushMatrix();
     fill(p.r, p.g, p.b);
     textSize(20);
-    text("Click izquierdo sobre una casilla\npara seleccionarla\n\nUsa los numeros del teclado\npara introducir un numero en\nla casilla seleccionada\n\nPulsa RETROCESO para abandonar\nla partida y volver al menu", 915, 40);
+    text("Click izquierdo sobre una casilla\npara seleccionarla\n\nUsa los numeros del teclado\npara introducir un numero en\nla casilla seleccionada\n\nPulsa RETROCESO para abandonar\nla partida y volver al menu", 915, 45);
 
     popMatrix();
   }
