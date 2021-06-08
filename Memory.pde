@@ -2,23 +2,28 @@ import processing.sound.*;
 
 class Memory extends MiniGame{
   
+  
+  //Variables de gestion
   private boolean waiting, isGameLoose;
   private int nSounds;
-  private ArrayList<myKey> keyList;
-  
+  private ArrayList<myKey> keyList; 
   private boolean displaySound, userKeyPress;
   private int currentSounds, solvedSounds, pressedKey;
   private int[] levelList;
   private myKey currentKey;
   
+  //Sonido de pulso
   private Pulse pulso;
+  
+  //Paleta de colores
   private Palette p;
   
+  //Imagenes del how to play
   private PImage img0, img1;
   
+  //Sonido
   private int sound;
-  
-  SoundFile level_complete;
+  private SoundFile level_complete;
   
   Memory(String gameName, Pulse pulso, SoundFile S321, SoundFile Ya, SoundFile level_complete) {
     this.S321 = S321;
@@ -162,6 +167,7 @@ class Memory extends MiniGame{
     }
   }
   
+  //Muestra la informacion de la partida
   void displayText(){
     pushMatrix();
     textSize(30);
@@ -170,19 +176,16 @@ class Memory extends MiniGame{
     textSize(30);
     if(waiting){
       pushMatrix();
-      //rotate(PI/2.0);
       triangle(500,75,500,25,550,50);
       popMatrix();
-      //text("Pulsa las teclas en el orden correcto",350,65);  
     } else {      
       rect(500,35,20,50,20,20,20,20);
-      rect(540,35,20,50,20,20,20,20);
-      //text("Presta atencion a la secuencia",350,65);  
-      
+      rect(540,35,20,50,20,20,20,20);      
     }
     popMatrix();
   }
   
+  //Crea las teclas
   void createKeyList(){
     keyList = new ArrayList<myKey>();
     keyList.add(new myKey(0,100,450,410,1,0,255,0,150));
@@ -191,12 +194,14 @@ class Memory extends MiniGame{
     keyList.add(new myKey(450,410,900,720,4,0,0,255,300));
   }
 
+  //Muestra las teclas
   void displayKeyList(){
     for( myKey k : keyList){
       k.display(false);
     }
   }
   
+  //Comprueba sobre que tecla se ha pulsado
   int checkKeys(int x, int y){
     for(myKey k : keyList){
       if(k.isInside(x,y)){
@@ -206,6 +211,7 @@ class Memory extends MiniGame{
     return -1;
   }
   
+  //Genera la siguiente combinación de teclas
   void generateNext(){
     int r;
     if(currentSounds > 0){
@@ -229,12 +235,13 @@ class Memory extends MiniGame{
     }
   }
   
-  
+  //Eniende la tecla pulsada y activa la reproduccion de su sonido
   void showKey(){
     currentKey.display(true);
     displaySound = true;
   }
   
+  //Comprueba la tecla pulsada
   void checkSound(int count){
     if(count != -1){
       userKeyPress = true;  
@@ -274,6 +281,7 @@ class Memory extends MiniGame{
   }
 
 }
+
 
 class myKey{
 

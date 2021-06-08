@@ -87,7 +87,6 @@ void setup() {
   String[] cameras = Capture.list();
   if (cameras.length == 0) {
     println("There are no cameras available for capture.");
-    exit();
   }
   if (cameras.length >=1){
     cam = new Capture(this, 650, 480, cameras[0]);
@@ -231,7 +230,7 @@ void displayLogin() {
   }
   noFill();
   stroke(255);
-  rect(390,310,350,45);
+  rect(390,310,600,45);
   
 }
 

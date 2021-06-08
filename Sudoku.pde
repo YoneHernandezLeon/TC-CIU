@@ -1,32 +1,41 @@
 class Sudoku extends MiniGame {
-
+  //Variables de sudoku
   int size = 9;
   int[][] solution = new int[size][size];
   int[][] current = new int[size][size];
 
+  //Variables de datos de los sudokus
   String originaPath = "Sudoku/Original.txt";
   String solvedPath = "Sudoku/Solved.txt";
 
+  //Variables de piezas del sudoku
   Piece[][] board = new Piece[size][size];
   Piece selected;
 
+  //Indice del sudoku
   int index;
 
+  //Numero de errores cometidos
   int fallos = 0; 
 
+  //Variablels de control
   boolean success;
   boolean gameFinished = false;
   boolean failAdded = false;
 
+  //Variables para el formato de tiempo y control del mismo
   int startTime, h, m, s;
   String ohs="00", oms="00", oss="00";
   String hs="00", ms="00", ss="00";
   boolean startTimer = true;
   
+  //Paleta de colores
   Palette p;
   
+  //Imagene del how to play
   private PImage img0, img1;
   
+  //Sonidos
   SoundFile acierto, error, level_complete, minigame;
 
   Sudoku(String gameName, Palette p, SoundFile S321, SoundFile Ya, SoundFile acierto, SoundFile error, SoundFile level_complete, SoundFile minigame) {
@@ -196,6 +205,7 @@ class Sudoku extends MiniGame {
     }
   }
 
+  //Comprueba si el sudoku esta completo
   void checkFinished() {
     for (int i = 0; i < size; i++) {
       for (int j = 0; j < size; j++) {
@@ -210,6 +220,7 @@ class Sudoku extends MiniGame {
     gameFinished = true;
   }
 
+  //Muestra el tablero
   void printBoard() {
     for (int i = 0; i < size; i++) {
       for (int j = 0; j < size; j++) {
@@ -232,6 +243,7 @@ class Sudoku extends MiniGame {
     popMatrix();
   }
 
+  //Muestra informacion de la partida
   void printText() {
     pushMatrix();
     score = (millis()-startTime)/1000;
@@ -273,7 +285,7 @@ class Sudoku extends MiniGame {
   }
 
   
-
+  //Metodo que resuelve automaticamente el sudoku
   void solve() {
     for (int i = 0; i < size; i++) {
       for (int j = 0; j < size; j++) {
@@ -347,6 +359,7 @@ class Sudoku extends MiniGame {
   }
 
 
+  //Comprueba la posicion clickeada
   void checkPosition(int x, int y) {
     for (int i = 0; i < size; i++) {
       for (int j = 0; j < size; j++) {
@@ -362,7 +375,7 @@ class Sudoku extends MiniGame {
   }
 
 
-
+  //Carga la solucion
   void loadSolution() {
     String[] lines = loadStrings(originaPath);
     index = (int)(random(1, Integer.parseInt(lines[0].substring(0, lines[0].indexOf(";")))));
@@ -377,6 +390,7 @@ class Sudoku extends MiniGame {
     }
   }
 
+  //Carga el estado original
   void loadCurrent() {
     String[] lines = loadStrings(solvedPath);
 
@@ -394,6 +408,7 @@ class Sudoku extends MiniGame {
     }
   }
 
+  //Crea el tablero
   void createBoard() {
     for (int i = 0; i < 9; i++) {
       for (int j = 0; j < 9; j++) {
@@ -402,15 +417,6 @@ class Sudoku extends MiniGame {
     }
   }
 }
-
-
-
-
-
-
-
-
-
 
 class Piece {
   int x, y, xWidth, yHeight, v, solution;
