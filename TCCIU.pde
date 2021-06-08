@@ -1,5 +1,7 @@
+import processing.video.*;
+
 int menuIndex = 0, menuMinigamesIndex = 0, menuOptionsIndex= 0, menuEditUserIndex = 0, menuDeleteUserIndex = 0;
-int maxMenu = 6,   maxMinigames = 3,       maxOptions = 3,     maxEditUser = 2, maxDeleteUser = 2;
+int maxMenu = 6, maxMinigames = 3, maxOptions = 3, maxEditUser = 2, maxDeleteUser = 2;
 int menuSelected = -1;
 /*
 -1 = Menu principal
@@ -15,17 +17,15 @@ MiniGame[] gameList = new MiniGame[numberOfGames];
 String[] gameListScoreText = new String[numberOfGames];
 int[] gameScore = new int[numberOfGames];
 
-
 int maxPalette = 5;
 Palette[] palettes = new Palette[maxPalette];
 String[] palettesText = new String[maxPalette];
-
 
 boolean userLogged = false;
 boolean inGame = false;
 boolean deleteUserMenu = false;
 boolean changeImage = false;
-
+boolean saveImage = false;
 
 JSONArray appData;
 String dataPath;
@@ -37,6 +37,8 @@ int barLimit = 300;
 int volume = 50, sound = 50, palette = 0;
 boolean volumeOption = false, soundOption = false, paletteOption = false, fontOption = false;
 
+Capture cam;
+
 void setup() {
   size(1280, 720, P2D);
   stroke(15);
@@ -44,7 +46,7 @@ void setup() {
   dataPath = "data/users.json";
   appData = loadJSONArray(dataPath);
   mg = new ManageUser(appData, dataPath);
-  
+
   palettes[0] = new Palette("img/palette/classic.png", 0, 0, 0);
   palettesText[0] = "Clásico";
   palettes[1] = new Palette("img/palette/warm.png", 75, 0, 0);
@@ -63,7 +65,13 @@ void setup() {
   gameList[2] = new CoinChange("Coins", maxPalette);
   gameListScoreText[2] = "Segundos";
 
-  
+  String[] cameras = Capture.list();
+  if (cameras.length == 0) {
+    println("There are no cameras available for capture.");
+    exit();
+  }
+  cam = new Capture(this, 650, 480, cameras[0]);
+  cam.start();
 }
 
 void draw() {
@@ -82,12 +90,11 @@ void draw() {
         displayMinigames();
         break;
       case 1:
-        if(deleteUserMenu){
+        if (deleteUserMenu) {
           displayDeleteUser();
-        }
-        else if(changeImage){
+        } else if (changeImage) {
           displayChangeImage();
-        }else{
+        } else {
           displayEditUser();
         }
         break;
@@ -130,10 +137,10 @@ void displayControlBox() {
   pushMatrix();
   noFill();
   rect(910, 20, 350, 290);
-  if(!inGame){
+  if (!inGame) {
     fill(palettes[palette].r, palettes[palette].g, palettes[palette].b);
     textSize(20);
-    if(!changeImage){
+    if (!changeImage) {
       text("Usa las flechas arriba y abajo para\nmoverte por los distintos menus.\nPulsa las flechas izquierda y\nderecha para aumentar o disminuir\nlas opciones que lo requieran\nPulsa ENTER para acceder al\nmenu o juego\nPulsa RETROCESO para volver al\nmenu", 915, 45);
     } else {
       text("Usa las flechas izquierda y derecha\npara cambiar de filtro.\nPulsa ENTER para sacar una imagen\nPulsa RETROCESO para volver al\nmenu", 915, 45);
@@ -146,11 +153,11 @@ void displayUser() {
   pushMatrix();
   PImage img = loadImage(currentUser.getProfileImage());
   img.resize(350, 350);
-  image(img, 910,320);
+  image(img, 910, 320);
   noFill();
-  rect(910,320,350,350);
+  rect(910, 318, 350, 350);
   textSize(30);
-  text(currentUser.getName(),910,703);
+  text(currentUser.getName(), 910, 703);
   popMatrix();
 }
 
@@ -175,13 +182,6 @@ void displayEditUser() {
   text("Cambiar imagen", 250, 300);
   text("Eliminar usuario", 250, 340);
   displayEditUserBox();
-}
-
-void displayEditUserBox(){
-  noFill();
-  strokeWeight(5);
-  stroke(palettes[palette].r, palettes[palette].g, palettes[palette].b);
-  rect(240, 265+menuEditUserIndex*40, 300, 45);
 }
 
 void changeUser() {
@@ -216,7 +216,7 @@ void displayMainMenu() {
 void displayMainBox() {
   noFill();
   strokeWeight(5);
-  stroke(palettes[palette].r, palettes[palette].g, palettes[palette].b);
+  stroke(15);
   rect(240, 265+menuIndex*40, 300, 45);
 }
 
@@ -233,11 +233,11 @@ void displayMinigames() {
     if ( gameScore == -1) {
       text(" -", 440, 300+40*i);
     } else {
-      if(i == 1){
+      if (i == 1) {
         text(gameListScoreText[i]+" "+abs(gameScore), 440, 300+40*i);
       } else {
         text(abs(gameScore)+" "+gameListScoreText[i], 440, 300+40*i);
-      }  
+      }
     }
   }
 
@@ -247,7 +247,7 @@ void displayMinigames() {
 void displayMinigameBox() {
   noFill();
   strokeWeight(5);
-  stroke(palettes[palette].r, palettes[palette].g, palettes[palette].b);
+  stroke(15);
   rect(240, 265+menuMinigamesIndex*40, 150, 45);
 }
 
@@ -258,18 +258,19 @@ void displayOptions() {
   textSize(30);
   text("Volumen de musica", 250, 300);
   textSize(20);
-  text("<-",250,337);
-  text("->",250+50+barLimit,337);
+  text("<-", 250, 337);
+  text("->", 250+50+barLimit, 337);
   noFill();
   rect(290, 320, barLimit, 20);
   fill(palettes[palette].r, palettes[palette].g, palettes[palette].b);
   rect(290, 320, volume*3, 20);
-  fill(palettes[palette].r, palettes[palette].g, palettes[palette].b);  textSize(30);
-  
+  fill(palettes[palette].r, palettes[palette].g, palettes[palette].b);  
+  textSize(30);
+
   text("Volumen de sonido", 250, 390);
   textSize(20);
-  text("<-",250,427);
-  text("->",250+50+barLimit,427);
+  text("<-", 250, 427);
+  text("->", 250+50+barLimit, 427);
   noFill();
   rect(290, 410, barLimit, 20);
   fill(palettes[palette].r, palettes[palette].g, palettes[palette].b);
@@ -278,13 +279,13 @@ void displayOptions() {
   textSize(30);
   text("Cambiar paleta de colores", 250, 480);
   textSize(20);
-  text("<-  "+palettesText[palette]+ "  ->",250,520);
+  text("<-  "+palettesText[palette]+ "  ->", 250, 520);
   displayOptionsBox();
 }
 
 void displayOptionsBox() {
   noFill();
-  stroke(palettes[palette].r, palettes[palette].g, palettes[palette].b);
+  stroke(15);
   strokeWeight(5);
   if (menuOptionsIndex == 0) {
     rect(240, 265, 400, 45);
@@ -296,8 +297,7 @@ void displayOptionsBox() {
     volumeOption = false;
     soundOption = true;
     paletteOption = false;
-    
-  } else if (menuOptionsIndex == 2){
+  } else if (menuOptionsIndex == 2) {
     //Opciones para paleta y fuente
     rect(240, 365+menuOptionsIndex*40, 400, 45);
     volumeOption = false;
@@ -311,6 +311,13 @@ void displayOptionsBox() {
   }
 }
 
+void displayEditUserBox() {
+  noFill();
+  strokeWeight(5);
+  stroke(15);
+  rect(240, 265+menuEditUserIndex*40, 300, 45);
+}
+
 void displayCredits() {
   textSize(40);
   textAlign(CENTER);
@@ -322,7 +329,7 @@ void displayCredits() {
   textAlign(LEFT);
 }
 
-void displayDeleteUser(){
+void displayDeleteUser() {
   textSize(40);
   text("¿Estas seguro?", 320, 250);
   textSize(30);
@@ -332,18 +339,37 @@ void displayDeleteUser(){
   displayDeleteUserBox();
 }
 
-void displayDeleteUserBox(){
+void displayDeleteUserBox() {
   noFill();
   strokeWeight(5);
-  stroke(palettes[palette].r, palettes[palette].g, palettes[palette].b);
+  stroke(15);
   rect(240, 265+menuDeleteUserIndex*40, 300, 45);
 }
 
 
-void displayChangeImage(){
+void displayChangeImage() {
+  if (cam.available()) {
+    cam.read();
+  }
+  int w = cam.width;
+  int h = cam.height;
+  image(cam, 450-w/2, 400-h/2);
+  stroke(15);
+  noFill();
+  rect(450-w/2, 400-h/2, 650, 480);
+  stroke(255);
+  rect(225, 175, 450, 450);
+  stroke(15);
+  fill(palettes[palette].r, palettes[palette].g, palettes[palette].b);
+  if(saveImage){
+    image(cam, 450-w/2, 400-h/2);
+    PImage img = get(225, 175, 450, 450);
+    img.save("img/users/" + currentUser.getName() + "_img.png");
+    currentUser.setProfileImage("img/users/" + currentUser.getName() + "_img.png");
+    mg.saveUser(currentUser);
+    resetMenu();
+  }
 }
-
-
 /*
 
  ------------------------------------- CONTROLES -------------------------------------
@@ -366,18 +392,17 @@ void currentIndexUp() {
     }
     break;
   case 1:
-    if(deleteUserMenu){
+    if (deleteUserMenu) {
       menuDeleteUserIndex--;
       if (menuDeleteUserIndex == -1) {
         menuDeleteUserIndex = maxDeleteUser-1;
-      } 
-    }else{
+      }
+    } else {
       menuEditUserIndex--;
       if (menuEditUserIndex == -1) {
         menuEditUserIndex = maxEditUser-1;
       }
     }
-    break;
   case 3:
     menuOptionsIndex--;
     if (menuOptionsIndex == -1) {
@@ -403,18 +428,17 @@ void currentIndexDown() {
     }
     break;
   case 1:
-    if(deleteUserMenu){
+    if (deleteUserMenu) {
       menuDeleteUserIndex++;
       if (menuDeleteUserIndex == maxDeleteUser) {
         menuDeleteUserIndex = 0;
-      }   
-    }else{
+      }
+    } else {
       menuEditUserIndex++;
       if (menuEditUserIndex == maxEditUser) {
         menuEditUserIndex = 0;
       }
     }
-    break;
   case 3:
     menuOptionsIndex++;
     if (menuOptionsIndex == maxOptions) {
@@ -434,17 +458,21 @@ void enterNewMenu() {
     break;
   case 1:
     if (menuEditUserIndex == 0) {
-      changeImage = true;   
+      if (changeImage){
+        saveImage = true;
+      } else {
+        changeImage = true;
+      }
     } else {
-      if(menuDeleteUserIndex == 0 && deleteUserMenu){
+      if (menuDeleteUserIndex == 0 && deleteUserMenu) {
         mg.removeUser(currentUser);
         currentUser = null;
         userLogged = false;
         userName = "";
         resetMenu();
-      }else if(menuDeleteUserIndex == 1 && deleteUserMenu){
+      } else if (menuDeleteUserIndex == 1 && deleteUserMenu) {
         resetMenu();
-      }else{
+      } else {
         deleteUserMenu = true;
       }
     }
@@ -462,6 +490,7 @@ void resetMenu() {
   inGame = false;
   deleteUserMenu = false;
   changeImage = false;
+  saveImage = false;
 }
 
 void keyPressed() {
@@ -481,32 +510,44 @@ void keyPressed() {
         if (keyCode == ENTER) {
           enterNewMenu();
         }
-        
-        if(keyCode == LEFT && volumeOption){
+
+        if (keyCode == LEFT && volumeOption) {
           volume-=10;
-          if(volume<0){volume=0;}
+          if (volume<0) {
+            volume=0;
+          }
         }
-        if(keyCode == RIGHT && volumeOption){
+        if (keyCode == RIGHT && volumeOption) {
           volume+=10;
-          if(volume>100){volume=100;}
+          if (volume>100) {
+            volume=100;
+          }
         }
-        
-        if(keyCode == LEFT && soundOption){
+
+        if (keyCode == LEFT && soundOption) {
           sound-=10;
-          if(sound<0){sound=0;}
+          if (sound<0) {
+            sound=0;
+          }
         }
-        if(keyCode == RIGHT && soundOption){
+        if (keyCode == RIGHT && soundOption) {
           sound+=10;
-          if(sound>100){sound=100;}
+          if (sound>100) {
+            sound=100;
+          }
         }
-        
-        if(keyCode == LEFT && paletteOption){
+
+        if (keyCode == LEFT && paletteOption) {
           palette--;
-          if(palette<0){palette=maxPalette - 1;}
+          if (palette<0) {
+            palette=maxPalette - 1;
+          }
         }
-        if(keyCode == RIGHT && paletteOption){
+        if (keyCode == RIGHT && paletteOption) {
           palette++;
-          if(palette==maxPalette){palette = 0;}
+          if (palette==maxPalette) {
+            palette = 0;
+          }
         }
       }
 
