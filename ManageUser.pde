@@ -1,3 +1,5 @@
+import java.io.File;
+
 class ManageUser{
   JSONArray appData;
   String path;
@@ -66,7 +68,11 @@ class ManageUser{
   
  void removeUser(User user){
    int id = user.getID();
-   appData.remove(id);
+   String fileName = user.getProfileImage();
+   if (!fileName.equals("img/users/default.jpeg")){
+     File f = sketchFile(fileName);
+     f.delete();
+   }appData.remove(id);
    
    for(; id < appData.size(); id++){
      JSONObject userData = appData.getJSONObject(id);
