@@ -1,15 +1,32 @@
-[{
-  "preferences": [
-    74,
-    100,
-    1
-  ],
-  "scores": [
-    3601,
-    -1,
-    -1
-  ],
-  "name": "carlos",
-  "id": 0,
-  "profileImage": "img/users/default.jpeg"
-}]
+[
+  {
+    "preferences": [
+      10,
+      30,
+      3
+    ],
+    "scores": [
+      3601,
+      -1,
+      -1
+    ],
+    "name": "carlos",
+    "id": 0,
+    "profileImage": "img/users/default.jpeg"
+  },
+  {
+    "preferences": [
+      50,
+      50,
+      0
+    ],
+    "scores": [
+      -1,
+      -1,
+      -1
+    ],
+    "name": "exit",
+    "id": 1,
+    "profileImage": "img/users/default.jpeg"
+  }
+]

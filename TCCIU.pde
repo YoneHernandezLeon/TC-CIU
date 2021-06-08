@@ -1,5 +1,5 @@
-int menuIndex = 0, menuMinigamesIndex = 0, menuOptionsIndex= 0, menuUserIndex = 0;
-int maxMenu = 6,   maxMinigames = 3,       maxOptions = 3,      maxUser = 0;
+int menuIndex = 0, menuMinigamesIndex = 0, menuOptionsIndex= 0, menuEditUserIndex = 0, menuDeleteUserIndex = 0;
+int maxMenu = 6,   maxMinigames = 3,       maxOptions = 3,     maxEditUser = 2, maxDeleteUser = 2;
 int menuSelected = -1;
 /*
 -1 = Menu principal
@@ -23,6 +23,8 @@ String[] palettesText = new String[maxPalette];
 
 boolean userLogged = false;
 boolean inGame = false;
+boolean deleteUserMenu = false;
+boolean changeImage = false;
 
 
 JSONArray appData;
@@ -80,7 +82,14 @@ void draw() {
         displayMinigames();
         break;
       case 1:
-        displayEditUser();
+        if(deleteUserMenu){
+          displayDeleteUser();
+        }
+        else if(changeImage){
+          displayChangeImage();
+        }else{
+          displayEditUser();
+        }
         break;
       case 2:
         //resetear usuario
@@ -133,8 +142,9 @@ void displayUser() {
   pushMatrix();
   PImage img = loadImage(currentUser.getProfileImage());
   img.resize(350, 350);
-  rect(908,318,352,352);
   image(img, 910,320);
+  noFill();
+  rect(910,320,350,350);
   textSize(30);
   text(currentUser.getName(),910,703);
   popMatrix();
@@ -157,7 +167,17 @@ void displayLogin() {
 
 
 void displayEditUser() {
-  text("Cambiar imagen", 250, 340);
+  textSize(30);
+  text("Cambiar imagen", 250, 300);
+  text("Eliminar usuario", 250, 340);
+  displayEditUserBox();
+}
+
+void displayEditUserBox(){
+  noFill();
+  strokeWeight(5);
+  stroke(palettes[palette].r, palettes[palette].g, palettes[palette].b);
+  rect(240, 265+menuEditUserIndex*40, 300, 45);
 }
 
 void changeUser() {
@@ -298,6 +318,26 @@ void displayCredits() {
   textAlign(LEFT);
 }
 
+void displayDeleteUser(){
+  textSize(40);
+  text("¿Estas seguro?", 320, 250);
+  textSize(30);
+  text("Sí", 250, 300);  
+  textSize(30);
+  text("No", 250, 340); 
+  displayDeleteUserBox();
+}
+
+void displayDeleteUserBox(){
+  noFill();
+  strokeWeight(5);
+  stroke(palettes[palette].r, palettes[palette].g, palettes[palette].b);
+  rect(240, 265+menuDeleteUserIndex*40, 300, 45);
+}
+
+
+void displayChangeImage(){
+}
 
 
 /*
@@ -319,6 +359,19 @@ void currentIndexUp() {
     menuMinigamesIndex--;
     if (menuMinigamesIndex == -1) {
       menuMinigamesIndex = maxMinigames-1;
+    }
+    break;
+  case 1:
+    if(deleteUserMenu){
+      menuDeleteUserIndex--;
+      if (menuDeleteUserIndex == -1) {
+        menuDeleteUserIndex = maxDeleteUser-1;
+      } 
+    }else{
+      menuEditUserIndex--;
+      if (menuEditUserIndex == -1) {
+        menuEditUserIndex = maxEditUser-1;
+      }
     }
     break;
   case 3:
@@ -345,6 +398,19 @@ void currentIndexDown() {
       menuMinigamesIndex = 0;
     }
     break;
+  case 1:
+    if(deleteUserMenu){
+      menuDeleteUserIndex++;
+      if (menuDeleteUserIndex == maxDeleteUser) {
+        menuDeleteUserIndex = 0;
+      }   
+    }else{
+      menuEditUserIndex++;
+      if (menuEditUserIndex == maxEditUser) {
+        menuEditUserIndex = 0;
+      }
+    }
+    break;
   case 3:
     menuOptionsIndex++;
     if (menuOptionsIndex == maxOptions) {
@@ -363,10 +429,20 @@ void enterNewMenu() {
     inGame = true;
     break;
   case 1:
-    if (menuUserIndex == 0) {
-      //Borrar usuario
+    if (menuEditUserIndex == 0) {
+      changeImage = true;   
     } else {
-      //Capturar imagen
+      if(menuDeleteUserIndex == 0 && deleteUserMenu){
+        mg.removeUser(currentUser);
+        currentUser = null;
+        userLogged = false;
+        userName = "";
+        resetMenu();
+      }else if(menuDeleteUserIndex == 1 && deleteUserMenu){
+        resetMenu();
+      }else{
+        deleteUserMenu = true;
+      }
     }
   }
 }
@@ -378,8 +454,10 @@ void resetMenu() {
   menuMinigamesIndex = 0; 
   menuOptionsIndex= 0; 
   menuSelected = -1; 
-  menuUserIndex = 0;
+  menuEditUserIndex = 0;
   inGame = false;
+  deleteUserMenu = false;
+  changeImage = false;
 }
 
 void keyPressed() {
@@ -401,20 +479,20 @@ void keyPressed() {
         }
         
         if(keyCode == LEFT && volumeOption){
-          volume--;
+          volume-=10;
           if(volume<0){volume=0;}
         }
         if(keyCode == RIGHT && volumeOption){
-          volume++;
+          volume+=10;
           if(volume>100){volume=100;}
         }
         
         if(keyCode == LEFT && soundOption){
-          sound--;
+          sound-=10;
           if(sound<0){sound=0;}
         }
         if(keyCode == RIGHT && soundOption){
-          sound++;
+          sound+=10;
           if(sound>100){sound=100;}
         }
         
