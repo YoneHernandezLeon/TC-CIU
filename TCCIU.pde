@@ -2,7 +2,7 @@ import processing.video.*;
 
 int menuIndex = 0, menuMinigamesIndex = 0, menuOptionsIndex= 0, menuEditUserIndex = 0, menuDeleteUserIndex = 0;
 int maxMenu = 6, maxMinigames = 3, maxOptions = 3, maxEditUser = 2, maxDeleteUser = 2;
-int menuSelected = -1;
+int menuSelected = -1; int filter = 0; int maxFilter = 5;
 /*
 -1 = Menu principal
  0  = Menu minijuegos
@@ -163,7 +163,9 @@ void displayUser() {
 
 void displayTitle() {
   textSize(50);
-  text("Titulo del juego", 250, 100);
+  textAlign(CENTER);
+  text("Not Brain Nor Training", 450, 100);
+  textAlign(LEFT);
 }
 
 void displayLogin() {
@@ -354,16 +356,33 @@ void displayChangeImage() {
   int w = cam.width;
   int h = cam.height;
   image(cam, 450-w/2, 400-h/2);
+  PImage img = get(225, 175, 450, 450);
+  image(img, 225, 175);
+  
+  switch(filter){
+    case 0:
+      break;
+    case 1:
+      img.filter(THRESHOLD);
+      break;
+    case 2:
+      img.filter(GRAY);
+      break;
+    case 3:
+      img.filter(INVERT);
+      break;
+    case 4:
+      img.filter(POSTERIZE, 3);
+      break;
+  }
+  
   stroke(15);
-  noFill();
   rect(450-w/2, 400-h/2, 650, 480);
   stroke(255);
   rect(225, 175, 450, 450);
   stroke(15);
   fill(palettes[palette].r, palettes[palette].g, palettes[palette].b);
   if(saveImage){
-    image(cam, 450-w/2, 400-h/2);
-    PImage img = get(225, 175, 450, 450);
     img.save("img/users/" + currentUser.getName() + "_img.png");
     currentUser.setProfileImage("img/users/" + currentUser.getName() + "_img.png");
     mg.saveUser(currentUser);
@@ -547,6 +566,19 @@ void keyPressed() {
           palette++;
           if (palette==maxPalette) {
             palette = 0;
+          }
+        }
+        
+        if (keyCode == LEFT && changeImage) {
+          filter--;
+          if (filter<0) {
+            filter=maxFilter - 1;
+          }
+        }
+        if (keyCode == RIGHT && changeImage) {
+          filter++;
+          if (filter==maxFilter) {
+            filter = 0;
           }
         }
       }
