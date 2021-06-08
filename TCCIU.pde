@@ -133,7 +133,11 @@ void displayControlBox() {
   if(!inGame){
     fill(palettes[palette].r, palettes[palette].g, palettes[palette].b);
     textSize(20);
-    text("Usa las flechas arriba y abajo para\nmoverte por los distintos menus.\nPulsa las flechas izquierda y\nderecha para aumentar o disminuir\nlas opciones que lo requieran\nPulsa ENTER para acceder al\nmenu o juego\nPulsa RETROCESO para volver al\nmenu", 915, 45);
+    if(!changeImage){
+      text("Usa las flechas arriba y abajo para\nmoverte por los distintos menus.\nPulsa las flechas izquierda y\nderecha para aumentar o disminuir\nlas opciones que lo requieran\nPulsa ENTER para acceder al\nmenu o juego\nPulsa RETROCESO para volver al\nmenu", 915, 45);
+    } else {
+      text("Usa las flechas izquierda y derecha\npara cambiar de filtro.\nPulsa ENTER para sacar una imagen\nPulsa RETROCESO para volver al\nmenu", 915, 45);
+    }
   }
   popMatrix();
 }
