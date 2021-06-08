@@ -28,5 +28,20 @@
     "name": "exit",
     "id": 1,
     "profileImage": "img/users/default.jpeg"
+  },
+  {
+    "preferences": [
+      50,
+      50,
+      0
+    ],
+    "scores": [
+      -1,
+      -1,
+      -1
+    ],
+    "name": "carlos",
+    "id": 13,
+    "profileImage": "img/users/carlos_img.jpg"
   }
 ]
