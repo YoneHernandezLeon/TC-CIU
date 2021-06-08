@@ -1,3 +1,4 @@
+import processing.sound.*;
 abstract class MiniGame {
   boolean start = false;
   
@@ -9,6 +10,8 @@ abstract class MiniGame {
   String gameName = "";
   
   
+  boolean countDownSound = false;
+  SoundFile S321, Ya;
   
   /*
   Este metodo se encarga de gestionar que se muestre el juego o las instrucciones.
@@ -87,6 +90,7 @@ abstract class MiniGame {
     if(millis - millis() <= -1000){
       if(millis - millis() <= -2000 ){
         if(millis - millis() <= -3000 ){
+          if(countDownSound){Ya.play();countDownSound = false;}
           text("YA",450,340);
           textAlign(LEFT);
           if(millis - millis() <= -3400 ){
@@ -94,12 +98,15 @@ abstract class MiniGame {
             timerFinished = true;
           }
         } else{
+          if(!countDownSound){S321.play();countDownSound = true;}
           text("1",450,340);
         }
       } else {
+        if(countDownSound){S321.play();countDownSound = false;}
         text("2",450,340);
       }
     } else {
+      if(!countDownSound){S321.play();countDownSound = true;}
       text("3",450,340);   
     }
   }

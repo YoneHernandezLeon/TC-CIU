@@ -25,7 +25,16 @@ class CoinChange extends MiniGame {
   
   PImage howto;
 
-  CoinChange(String name, int max) {
+  SoundFile acierto, error, level_complete, minigame;
+  
+  CoinChange(String name, int max, SoundFile S321, SoundFile Ya, SoundFile acierto, SoundFile error, SoundFile level_complete, SoundFile minigame) {
+    this.S321 = S321;
+    this.Ya = Ya;
+    this.acierto = acierto;
+    this.error = error;
+    this.level_complete = level_complete;
+    this.minigame = minigame;
+    
     this.score = 0;
     this.gameName = name;
     this.maxLevel = 7;
@@ -77,6 +86,7 @@ class CoinChange extends MiniGame {
     failAdded = false;
     setStartValues();
     
+    minigame.stop();
     resetShader();
   }
 
@@ -84,6 +94,7 @@ class CoinChange extends MiniGame {
     pushMatrix();
     textSize(30);
     if (!failAdded){
+      level_complete.play();
       score += fallos * 10;
       ohs = hs;
       oms = ms;
@@ -250,6 +261,7 @@ class CoinChange extends MiniGame {
   }
 
   void display(Palette p, int palette, int volume, int sound) {
+    if(!minigame.isPlaying()){minigame.loop();}
     this.p = p;
     this.palette = palette;
     if (start) {
@@ -375,9 +387,11 @@ class CoinChange extends MiniGame {
     float res = coins[0] * 2 + coins[1] + coins[2] * 0.5 + coins[3] * 0.2 + coins[4] * 0.1 + coins[5] * 0.05;
     textAlign(CENTER, CENTER);
     if (res + price == paid) {
+      acierto.play();
       level++;
       setStartValues();
     } else {
+      error.play();
       fallos++;
     }
     popMatrix();

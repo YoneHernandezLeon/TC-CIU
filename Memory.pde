@@ -18,7 +18,13 @@ class Memory extends MiniGame{
   
   private int sound;
   
-  Memory(String gameName, Pulse pulso){
+  SoundFile level_complete;
+  
+  Memory(String gameName, Pulse pulso, SoundFile S321, SoundFile Ya, SoundFile level_complete) {
+    this.S321 = S321;
+    this.Ya = Ya;
+    this.level_complete = level_complete;
+
     this.gameName = gameName;
     this.pulso = pulso;
     
@@ -117,8 +123,8 @@ class Memory extends MiniGame{
     
     
     if(displaySound){
-      pulso.amp((float)sound/100.0);
       pulso.freq(currentKey.getFreq());
+      pulso.amp((float)sound/1000.0);
       pulso.play();
       delay(1000);
       pulso.stop();
@@ -140,6 +146,7 @@ class Memory extends MiniGame{
             userKeyPress = false;
             solvedSounds++;
           } else {
+            level_complete.play();
             isGameLoose = true;
           }
         }

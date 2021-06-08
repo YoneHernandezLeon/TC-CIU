@@ -12,7 +12,7 @@ class Sudoku extends MiniGame {
 
   int index;
 
-  int fallos = 0; //TIEMPO
+  int fallos = 0; 
 
   boolean success;
   boolean gameFinished = false;
@@ -26,9 +26,20 @@ class Sudoku extends MiniGame {
   Palette p;
   
   private PImage img0, img1;
+  
+  SoundFile acierto, error, level_complete, minigame;
 
-  Sudoku(String gameName, Palette p) {
-    score = 3600;
+  Sudoku(String gameName, Palette p, SoundFile S321, SoundFile Ya, SoundFile acierto, SoundFile error, SoundFile level_complete, SoundFile minigame) {
+    this.S321 = S321;
+    this.Ya = Ya;
+    this.acierto = acierto;
+    this.error = error;
+    this.level_complete = level_complete;
+    this.minigame = minigame;
+    
+    
+    
+    score = 0;
     this.gameName = gameName;
     this.p = p;
     
@@ -54,11 +65,11 @@ class Sudoku extends MiniGame {
     oss="00";
     fallos = 0;
     failAdded = false;
+    minigame.stop();
   }
 
 
   void controlDisplay() {
-    //rect(910,20,350,290);
     pushMatrix();
     fill(p.r, p.g, p.b);
     textSize(20);
@@ -129,6 +140,7 @@ class Sudoku extends MiniGame {
     popMatrix();
   }
   void display(Palette p, int palette, int volume, int sound) {
+    if(!minigame.isPlaying()){minigame.loop();}
     this.p = p;
     if (start) {
       if (timerFinished) {
@@ -174,7 +186,6 @@ class Sudoku extends MiniGame {
       if (fallos >= 5) {
         youLoose();
       } else {
-        //Rectangulo blanco como fondo
         printBoard();
         printText();
         controlDisplay();
@@ -194,7 +205,8 @@ class Sudoku extends MiniGame {
         }
       }
     }
-
+    
+    level_complete.play();
     gameFinished = true;
   }
 
@@ -222,17 +234,7 @@ class Sudoku extends MiniGame {
 
   void printText() {
     pushMatrix();
-    /*textSize(40);
-     fill(255,0,0);
-     text("Fallos: "+fallos, 20,65);
-     fill(0,255,0);
-     text("Aciertos: "+aciertos, 210,65);
-     fill(0,0,255);
-     text("Puntuación: "+score, 570,65);
-     */
-
-
-    score = (millis()-startTime)/1000 + 3400;
+    score = (millis()-startTime)/1000;
     s = score;
     h = 0;
     while (s >= 3600) {
@@ -263,11 +265,9 @@ class Sudoku extends MiniGame {
     }
 
     fill(p.r, p.g, p.b);
-    //fill(255, 0, 0);
     text("Vidas: "+(5-fallos), 20, 65);
 
     fill(p.r, p.g, p.b);
-    //fill(0, 0, 255);
     text(hs+":"+ms+":"+ss, 650, 65);
     popMatrix();
   }
@@ -299,45 +299,38 @@ class Sudoku extends MiniGame {
         switch(keyPress) {
         case 49:
           selected.setValue(1);
-          println(1);
           break;
         case 50:
           selected.setValue(2);
-          println(2);
           break;
         case 51:
           selected.setValue(3);
-          println(3);
           break;
         case 52:
           selected.setValue(4);
-          println(4);
           break;
         case 53:
           selected.setValue(5);
-          println(5);
           break;
         case 54:
           selected.setValue(6);
-          println(6);
           break;
         case 55:
           selected.setValue(7);
-          println(7);
           break;
         case 56:
           selected.setValue(8);
-          println(8);
           break;
         case 57:
           selected.setValue(9);
-          println(9);
           break;
         }
         success = selected.getPieceEnded();
         if (!success && !gameFinished) {
           fallos++;
-          println(fallos);
+          error.play();
+        } else {
+          acierto.play();
         }
       } 
       catch(NullPointerException e) {
@@ -376,13 +369,10 @@ class Sudoku extends MiniGame {
 
     int posI = 0;
     int start = 2+(index-1)*10;
-    println("Solucion:");
     for (int i = start; i < start+9; i++) {
       for (int j = 0; j < 9; j++) {
         solution[posI][j] = Character.getNumericValue(lines[i].charAt(j));
-        print(solution[posI][j]);
       }
-      println();
       posI++;
     }
   }
@@ -392,7 +382,6 @@ class Sudoku extends MiniGame {
 
     int posI = 0;
     int start = 2+(index-1)*10;
-    println("Original:");
     for (int i = start; i < start+9; i++) {
       for (int j = 0; j < 9; j++) {
         if (lines[i].charAt(j) == '.') {
@@ -400,9 +389,7 @@ class Sudoku extends MiniGame {
         } else { 
           current[posI][j] = Character.getNumericValue(lines[i].charAt(j));
         }
-        print(current[posI][j]);
       }
-      println();
       posI++;
     }
   }
@@ -463,14 +450,11 @@ class Piece {
           line(x+5, y+0.85*yHeight, x+xWidth-5, y+0.85*yHeight);
         }
         if (v == -1) {
-          // Sin numero
         } else {
           if (v != solution) {
-            // Numero mal
             fill(255, 0, 0);
             text(""+v, x+0.35*xWidth, y+0.75*yHeight);
           } else {
-            //numero bien
             pieceEnded = true;
           }
         }

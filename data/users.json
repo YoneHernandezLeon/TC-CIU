@@ -1,16 +1,16 @@
 [
   {
     "preferences": [
-      10,
-      30,
-      3
+      50,
+      50,
+      0
     ],
     "scores": [
-      3601,
+      -1,
       -1,
       -1
     ],
-    "name": "carlos",
+    "name": "exit",
     "id": 0,
     "profileImage": "img/users/default.jpeg"
   },
@@ -25,23 +25,23 @@
       -1,
       -1
     ],
-    "name": "exit",
-    "id": 1,
+    "name": "user",
+    "id": 2,
     "profileImage": "img/users/default.jpeg"
   },
   {
     "preferences": [
-      50,
+      100,
       50,
       0
     ],
     "scores": [
+      1,
       -1,
-      -1,
-      -1
+      0
     ],
     "name": "carlos",
-    "id": 13,
+    "id": 2,
     "profileImage": "img/users/carlos_img.png"
   }
 ]
