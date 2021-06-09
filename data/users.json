@@ -43,5 +43,20 @@
     "name": "carlos",
     "id": 2,
     "profileImage": "img/users/carlos_img.png"
+  },
+  {
+    "preferences": [
+      50,
+      50,
+      4
+    ],
+    "scores": [
+      -1,
+      -1,
+      -1
+    ],
+    "name": "usuario",
+    "id": 3,
+    "profileImage": "img/users/default.jpeg"
   }
 ]

@@ -166,6 +166,11 @@ void resetMenu() {
 
 //Muestra el panel derecho
 void displayRightPanel() {
+  if(palette == 4){
+    stroke(255);
+  } else {
+    stroke(15);
+  }
   line(900, 0, 900, 720);
   displayControlBox();
   displayUser();
@@ -175,6 +180,11 @@ void displayRightPanel() {
 void displayControlBox() {
   pushMatrix();
   noFill();
+  if(palette == 4){
+    stroke(255);
+  } else {
+    stroke(15);
+  }
   rect(910, 20, 350, 290);
   if (!inGame) {
     fill(palettes[palette].r, palettes[palette].g, palettes[palette].b);
@@ -190,6 +200,11 @@ void displayControlBox() {
 
 //Muestra el nombre y la imagen del usuario en el panel derecho
 void displayUser() {
+  if(palette == 4){
+    stroke(255);
+  } else {
+    stroke(15);
+  }
   pushMatrix();
   PImage img = loadImage(currentUser.getProfileImage());
   img.resize(350, 350);
@@ -229,6 +244,7 @@ void displayLogin() {
     text(userName, 400, 340);
   }
   noFill();
+  strokeWeight(5);
   stroke(255);
   rect(390,310,600,45);
   
@@ -244,7 +260,11 @@ void displayEditUser() {
 void displayEditUserBox() {
   noFill();
   strokeWeight(5);
-  stroke(15);
+  if(palette == 4){
+    stroke(255);
+  } else {
+    stroke(15);
+  }
   rect(240, 265+menuEditUserIndex*40, 300, 45);
 }
 
@@ -263,7 +283,11 @@ void displayMainMenu() {
 void displayMainBox() {
   noFill();
   strokeWeight(5);
-  stroke(15);
+  if(palette == 4){
+    stroke(255);
+  } else {
+    stroke(15);
+  }
   rect(240, 265+menuIndex*40, 300, 45);
 }
 
@@ -291,7 +315,11 @@ void displayMinigames() {
 void displayMinigameBox() {
   noFill();
   strokeWeight(5);
-  stroke(15);
+  if(palette == 4){
+    stroke(255);
+  } else {
+    stroke(15);
+  }
   rect(240, 265+menuMinigamesIndex*40, 150, 45);
 }
 
@@ -328,7 +356,11 @@ void displayOptions() {
 }
 void displayOptionsBox() {
   noFill();
-  stroke(15);
+  if(palette == 4){
+    stroke(255);
+  } else {
+    stroke(15);
+  }
   strokeWeight(5);
   if (menuOptionsIndex == 0) {
     rect(240, 265, 400, 45);
@@ -378,7 +410,11 @@ void displayDeleteUser() {
 void displayDeleteUserBox() {
   noFill();
   strokeWeight(5);
-  stroke(15);
+  if(palette == 4){
+    stroke(255);
+  } else {
+    stroke(15);
+  }
   rect(240, 265+menuDeleteUserIndex*40, 300, 45);
 }
 
