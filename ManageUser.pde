@@ -9,6 +9,8 @@ class ManageUser{
     this.path = path;
   }
   
+  //Devuelve el usuario con los valores que este tenía la última vez que salió si coincide con el parámetro userName, 
+  //en caso contrario crea un nuevo usuario y lo guarda en el fichero especificado en path
   User login(String userName){
     User user;
     for(int i = 0; i < appData.size(); i++){
@@ -39,7 +41,7 @@ class ManageUser{
     return user;
   }
   
-
+  //guarda el usuario en el fichero especificado en path
   void saveUser(User user){
     JSONObject userData = new JSONObject();
     
@@ -66,6 +68,8 @@ class ManageUser{
     saveJSONArray(appData, path);
   }
   
+ //Elimina el usuario del fichero especificado en path, resta uno al id de los demás usuarios que estuvieran por
+ //delante de ese y en caso de no tener la imagen de perfil por defecto, esta también será elminada
  void removeUser(User user){
    int id = user.getID();
    String fileName = user.getProfileImage();
