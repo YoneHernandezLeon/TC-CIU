@@ -1,13 +1,16 @@
 class User{ 
   private final int ID;
   private String name;
-  private int[] score = {-1, -1, -1};
+  //valores por defecto en la puntuación del usuario(indica que el usuario no hajugado) cuando se crea
+  private int[] score = {-1, -1, -1}; 
+  //valores por defecto en las opciones de sonido y color de paleta
   private int[] preferences = {50, 50, 0};
   private String profileImage;
   
   public User(int ID, String name){
     this.ID = ID;
     this.name = name;
+    //cuando se crea un usuario se le da una foto de perfil por defecto
     this.profileImage = "img/users/default.jpeg";
   }
   
@@ -19,6 +22,7 @@ class User{
     this.profileImage = profileImage;
   }
   
+  //Añade una puntación si no se ha jugado a un minijuego, o en caso de obtener una mejor
   public void setScoreOf(int newScore, String game){
     switch(game){
       case "Sudoku":
@@ -35,6 +39,7 @@ class User{
     }
   }
   
+  //Cambia el valor de una opción como volumen, sonido y color de paleta
   public void setPreference(int value, String preference){
     switch(preference){
       case "Volume":
