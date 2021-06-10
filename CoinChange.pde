@@ -143,7 +143,7 @@ class CoinChange extends MiniGame {
     }
     
     text("Tiempo final: "+hs+":"+ms+":"+ss, 100, 420);
-    text("Pulsa retroceso para volver al menu",15,700);
+    text("Pulsa retroceso para volver al menú",15,700);
     popMatrix();
   }
 
@@ -152,7 +152,7 @@ class CoinChange extends MiniGame {
     fill(p.r, p.g, p.b);
     textSize(20);
     textAlign(LEFT);
-    text("Click izquierdo sobre una moneda\npara añadirla al bote.\nClick derecho sobre una moneda\npara retirarla del bote.\nPulsa espacio para confirmar\nel cambio.\n\nPulsa RETROCESO para abandonar\nla partida y volver al menu.", 915, 45);
+    text("Click izquierdo sobre una moneda\npara añadirla al bote.\nClick derecho sobre una moneda\npara retirarla del bote.\nPulsa espacio para confirmar\nel cambio.\n\nPulsa RETROCESO para abandonar\nla partida y volver al menú.", 915, 45);
 
     popMatrix();
   }
@@ -175,11 +175,11 @@ class CoinChange extends MiniGame {
       "-Este minijuego consiste en entregar (en monedas) el camio exacto al cliente, quien\npagará siempre con billetes de 5, 10 y 20€\n"+
       "-En la parte izquierda del juego encontrarás el precio que tiene que pagar el cliente\n(arriba) y los billetes con los que paga (abajo).\n"+
       "-En la parte derecha del juego encontrarás el bote con las monedas seleccionadas (arriba)\ny los botones para añadir o retirar monedas (abajo).\n"+
-      "-Tu puntuacion final sera el tiempo que has tardado en completar 7 casos mas una\npenalizacion por cada fallo cometido.\n"
+      "-Tu puntuacion final será el tiempo que has tardado en completar 7 casos más una\npenalización por cada fallo cometido.\n"
       , 15, 180);
     image(howto, 300, 420);
     text("Pulsa enter para comenzar", 15, 700);
-    text("Pulsa retroceso para volver al menu", 540, 700);
+    text("Pulsa retroceso para volver al menú", 540, 700);
     popMatrix();
     controlDisplay();
   }
@@ -246,7 +246,7 @@ class CoinChange extends MiniGame {
     controlDisplay();
   }
 
-  //Reinicia los valores para cada caso nueo del minijuego de manera aleatoria
+  //Reinicia los valores para cada caso nuevo del minijuego de manera aleatoria
   void setStartValues() {
     for (int i = 0; i < 6; i++) {
       coins[i] = 0;
