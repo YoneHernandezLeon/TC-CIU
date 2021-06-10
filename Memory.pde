@@ -66,14 +66,14 @@ class Memory extends MiniGame{
     fill(p.r, p.g, p.b);
     textSize(50);
     text("Has perdido con una racha de "+ score,15,300);
-    text("Pulsa retroceso para volver al menu",15,700);
+    text("Pulsa retroceso para volver al menú",15,700);
   }
   
   void controlDisplay(){
     pushMatrix();
     fill(p.r, p.g, p.b);
     textSize(20);
-    text("Click izquierdo sobre una tecla\npara seleccionarla como la\nsiguiente tecla de secuencia\n\nPulsa RETROCESO para abandonar\nla partida y volver al menu", 915, 45);
+    text("Click izquierdo sobre una tecla\npara seleccionarla como la\nsiguiente tecla de secuencia\n\nPulsa RETROCESO para abandonar\nla partida y volver al menú", 915, 45);
     popMatrix();
   }
   
@@ -108,11 +108,11 @@ class Memory extends MiniGame{
     text("Instrucciones",15,140);
     textSize(20);
     text(
-    "-Este minijuego consiste en escuchar y ver una secuencia de sonidos y luces y repetirla\npulsando las mismas teclas.La puntuacion del juego esta definida por el \nnumero de secuencias seguidas que aciertes.\n"+
-    "-Tanto el sonido como la iluminacion se mantendran durante 1 segundo. Tras completar\ncorrectamente una secuencia habra una pausa de 1 segundo antes de comenzar la\nsiguiente. Se indicara con simbolo de \"pause\" cuando el usuario se encuentre a la espera\nde la secuencia y un simbolo de \"play\" cuando el usuario tenga que clickar la secuencia"
+    "-Este minijuego consiste en escuchar y ver una secuencia de sonidos y luces y repetirla\npulsando las mismas teclas.La puntuación del juego esta definida por el \nnumero de secuencias seguidas que aciertes.\n"+
+    "-Tanto el sonido como la iluminación se mantendran durante 1 segundo. Tras completar\ncorrectamente una secuencia habrá una pausa de 1 segundo antes de comenzar la\nsiguiente. Se indicara con símbolo de \"pause\" cuando el usuario se encuentre a la espera\nde la secuencia y un símbolo de \"play\" cuando el usuario tenga que clickar la secuencia"
     ,15,180);
     text("Pulsa enter para comenzar", 15, 700);
-    text("Pulsa retroceso para volver al menu", 540, 700);
+    text("Pulsa retroceso para volver al menú", 540, 700);
     
     image(img0, 100, 420);
     image(img1, 500, 420);

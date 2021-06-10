@@ -82,7 +82,7 @@ class Sudoku extends MiniGame {
     pushMatrix();
     fill(p.r, p.g, p.b);
     textSize(20);
-    text("Click izquierdo sobre una casilla\npara seleccionarla\n\nUsa los numeros del teclado\npara introducir un numero en\nla casilla seleccionada\n\nPulsa RETROCESO para abandonar\nla partida y volver al menu", 915, 45);
+    text("Click izquierdo sobre una casilla\npara seleccionarla\n\nUsa los números del teclado\npara introducir un numero en\nla casilla seleccionada\n\nPulsa RETROCESO para abandonar\nla partida y volver al menú", 915, 45);
 
     popMatrix();
   }
@@ -133,7 +133,7 @@ class Sudoku extends MiniGame {
       ss = ""+s;
     }
     text("Tiempo final: "+hs+":"+ms+":"+ss, 100, 370);
-    text("Pulsa retroceso para volver al menu",15,700);
+    text("Pulsa retroceso para volver al menú",15,700);
     popMatrix();
   }
   boolean isGameFinished(){
@@ -145,7 +145,7 @@ class Sudoku extends MiniGame {
     textSize(50);
     text("HAS PERDIDO", 200, 310);
     textSize(20);
-    text("Pulsa retroceso para volver al menu",15,700);
+    text("Pulsa retroceso para volver al menú",15,700);
     popMatrix();
   }
   void display(Palette p, int palette, int volume, int sound) {
@@ -178,14 +178,14 @@ class Sudoku extends MiniGame {
     text("Instrucciones", 15, 140);
     textSize(20);
     text(
-      "-Este minijuego consiste en colocar los numeros del 1 al 9 en cada fila, cada columna y en\ncada cuadrante 3x3. En cada una de estas designaciones los numero no se pueden repetir.\n"+
-      "-Comienzas el juego con 5 vidas. Pierdes una vida cada vez que coloques un numero mal.\nSabras que un numero esta mal porque saldra en rojo. Si un numero sale en verde\nesto indica que es correcto.\n"+
-      "-Si te quedas sin vidas pierdes. Si completas el sudoku con alguna vida restante tu\npuntuacion sera el tiempo que has tardado mas una penalizacion por las vidas perdidas.\n"
+      "-Este minijuego consiste en colocar los números del 1 al 9 en cada fila, cada columna y en\ncada cuadrante 3x3. En cada una de estas designaciones los numero no se pueden repetir.\n"+
+      "-Comienzas el juego con 5 vidas. Pierdes una vida cada vez que coloques un numero mal.\nSabrás que un numero esta mal porque saldrá en rojo. Si un numero sale en verde\nesto indica que es correcto.\n"+
+      "-Si te quedas sin vidas pierdes. Si completas el sudoku con alguna vida restante tu\npuntuación será el tiempo que has tardado mas una penalización por las vidas perdidas.\n"
       , 15, 180);
     image(img0, 100, 420);
     image(img1, 500, 420);
     text("Pulsa enter para comenzar", 15, 700);
-    text("Pulsa retroceso para volver al menu", 540, 700);
+    text("Pulsa retroceso para volver al menú", 540, 700);
     popMatrix();
     controlDisplay();
   }

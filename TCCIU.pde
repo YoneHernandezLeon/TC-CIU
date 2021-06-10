@@ -190,9 +190,9 @@ void displayControlBox() {
     fill(palettes[palette].r, palettes[palette].g, palettes[palette].b);
     textSize(20);
     if (!changeImage) {
-      text("Usa las flechas arriba y abajo para\nmoverte por los distintos menus.\nPulsa las flechas izquierda y\nderecha para aumentar o disminuir\nlas opciones que lo requieran\nPulsa ENTER para acceder al\nmenu o juego\nPulsa RETROCESO para volver al\nmenu", 915, 45);
+      text("Usa las flechas arriba y abajo para\nmoverte por los distintos menus.\nPulsa las flechas izquierda y\nderecha para aumentar o disminuir\nlas opciones que lo requieran\nPulsa ENTER para acceder al\nmenú o juego\nPulsa RETROCESO para volver al\nmenú", 915, 45);
     } else {
-      text("Usa las flechas izquierda y derecha\npara cambiar de filtro.\nPulsa ENTER para sacar una imagen\nPulsa RETROCESO para volver al\nmenu", 915, 45);
+      text("Usa las flechas izquierda y derecha\npara cambiar de filtro.\nPulsa ENTER para sacar una imagen.\nPulsa RETROCESO para volver al\nmenú", 915, 45);
     }
   }
   popMatrix();
@@ -230,6 +230,8 @@ void displayLogin() {
   fill(255);
   textSize(25);
   text("Escribe el nombre de usuario", 390, 300);
+  textSize(15);
+  text("Solo se permiten letras mayúsculas y minúsculas sin signos de puntuación. También se permiten espacios",390,375);
   if(on){
     if(millis() > counter+500){
       on = false;
@@ -247,6 +249,7 @@ void displayLogin() {
   strokeWeight(5);
   stroke(255);
   rect(390,310,600,45);
+  
   
 }
 
@@ -276,7 +279,7 @@ void displayMainMenu() {
   text("Editar usuario", 250, 340);
   text("Cambiar usuario", 250, 380);
   text("Opciones", 250, 420);
-  text("Creditos", 250, 460);
+  text("Créditos", 250, 460);
   text("Salir", 250, 500);
   displayMainBox();
 }
@@ -328,7 +331,7 @@ void displayOptions() {
   textSize(40);
   text("Opciones", 320, 250);
   textSize(30);
-  text("Volumen de musica", 250, 300);
+  text("Volumen de música", 250, 300);
   textSize(20);
   text("<-", 250, 337);
   text("->", 250+50+barLimit, 337);
@@ -475,7 +478,10 @@ void displayChangeImage() {
       resetMenu();
     }
   } else {
-    text("Necesitas una camara para cambiar de imagen.\nPulsa retroceso para volver al menu",15,300);
+    pushMatrix();
+    textSize(20);
+    text("Necesitas una cámara para cambiar de imagen.\nPulsa retroceso para volver al menú",15,300);
+    popMatrix();
   }
 }
 /*
@@ -678,12 +684,14 @@ void keyPressed() {
       volume = currentUser.getPreference("Volume");
       sound = currentUser.getPreference("Sound");
       palette = currentUser.getPreference("Palette");
+      setSound();
+      setVolume();
       userLogged = true;
     }
 
     if (keyCode == BACKSPACE && userName.length() > 0) {
       userName = userName.substring(0, userName.length() - 1);
-    } else if (keyCode >= 32 && keyCode <= 94  && userName.length() < 26) {
+    } else if ((key == 32 || (key >= 65 && key <= 90) || (key >= 97 && key <= 122))  && userName.length() < 26) {
       userName += key;
     }
   }
