@@ -45,7 +45,7 @@ Este es el directorio que posee los distintos shaders de textura utilizados para
 En esta carpeta encontramos los ficheros Original.txt y Solved.txt, los cuales poseen los Sudokus de la aplicación, así como sus soluciones. 
 
 ### Resultado de la aplicación
-![Animación 1]-------AQUI VAN LOS GIFS-------
+![error](https://github.com/YoneHernandezLeon/TCCIU/blob/main/gif.gif?raw=true)
 
 ### Referencias
 ##### Sonidos:
