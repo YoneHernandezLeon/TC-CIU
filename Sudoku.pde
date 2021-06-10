@@ -284,16 +284,6 @@ class Sudoku extends MiniGame {
     popMatrix();
   }
 
-  
-  //Metodo que resuelve automaticamente el sudoku
-  void solve() {
-    for (int i = 0; i < size; i++) {
-      for (int j = 0; j < size; j++) {
-        board[i][j].setValue(solution[i][j]);
-      }
-    }
-  }
-
   void control(int keyPress) {
     if (keyPress == ENTER) {
       if (!start) {
@@ -302,8 +292,6 @@ class Sudoku extends MiniGame {
         loadSolution();
         loadCurrent();
         createBoard();
-      } else {
-        solve();
       }
     }
     if (keyPress <= 57 && keyPress >= 49) {
