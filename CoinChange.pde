@@ -290,7 +290,7 @@ class CoinChange extends MiniGame {
   }
 
   void control(int keyPress) {
-    if (keyPress == ' ' && level != maxLevel) {
+    if (keyPress == ' ' && level < maxLevel) {
       calculate();
     } else if (keyPress == ENTER) {
       if (!start) {

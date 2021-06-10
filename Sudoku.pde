@@ -294,7 +294,7 @@ class Sudoku extends MiniGame {
         createBoard();
       }
     }
-    if (keyPress <= 57 && keyPress >= 49) {
+    if (keyPress <= 57 && keyPress >= 49 && !selected.getPieceEnded()) {
       try {
         switch(keyPress) {
         case 49:
