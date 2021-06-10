@@ -294,46 +294,49 @@ class Sudoku extends MiniGame {
         createBoard();
       }
     }
-    if (keyPress <= 57 && keyPress >= 49 && !selected.getPieceEnded()) {
-      try {
-        switch(keyPress) {
-        case 49:
-          selected.setValue(1);
-          break;
-        case 50:
-          selected.setValue(2);
-          break;
-        case 51:
-          selected.setValue(3);
-          break;
-        case 52:
-          selected.setValue(4);
-          break;
-        case 53:
-          selected.setValue(5);
-          break;
-        case 54:
-          selected.setValue(6);
-          break;
-        case 55:
-          selected.setValue(7);
-          break;
-        case 56:
-          selected.setValue(8);
-          break;
-        case 57:
-          selected.setValue(9);
-          break;
+    
+    if (selected != null){
+      if (keyPress <= 57 && keyPress >= 49 && !selected.getPieceEnded()) {
+        try {
+          switch(keyPress) {
+          case 49:
+            selected.setValue(1);
+            break;
+          case 50:
+            selected.setValue(2);
+            break;
+          case 51:
+            selected.setValue(3);
+            break;
+          case 52:
+            selected.setValue(4);
+            break;
+          case 53:
+            selected.setValue(5);
+            break;
+          case 54:
+            selected.setValue(6);
+            break;
+          case 55:
+            selected.setValue(7);
+            break;
+          case 56:
+            selected.setValue(8);
+            break;
+          case 57:
+            selected.setValue(9);
+            break;
+          }
+          success = selected.getPieceEnded();
+          if (!success && !gameFinished) {
+            fallos++;
+            error.play();
+          } else {
+            acierto.play();
+          }
+        } 
+        catch(NullPointerException e) {
         }
-        success = selected.getPieceEnded();
-        if (!success && !gameFinished) {
-          fallos++;
-          error.play();
-        } else {
-          acierto.play();
-        }
-      } 
-      catch(NullPointerException e) {
       }
     }
   }
