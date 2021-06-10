@@ -230,8 +230,6 @@ void displayLogin() {
   fill(255);
   textSize(25);
   text("Escribe el nombre de usuario", 390, 300);
-  textSize(15);
-  text("Solo se permiten letras mayúsculas y minúsculas sin signos de puntuación. También se permiten espacios",390,375);
   if(on){
     if(millis() > counter+500){
       on = false;
@@ -245,6 +243,9 @@ void displayLogin() {
     }
     text(userName, 400, 340);
   }
+  
+  textSize(15);
+  text("Solo se permiten letras mayúsculas y minúsculas sin signos de puntuación. También se permiten espacios",390,375);
   noFill();
   strokeWeight(5);
   stroke(255);
