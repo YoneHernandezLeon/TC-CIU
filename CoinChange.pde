@@ -1,30 +1,39 @@
 class CoinChange extends MiniGame {
-
+  
+  //Variables para el manejo y creación de monedas
   private final int dim = 100;
   private final int[][] pcoins = {{483, 504}, {483, 648}, {649, 504}, {649, 648}, {815, 504}, {815, 648}};
   private final int[][] presult = {{483, 108}, {483, 324}, {649, 108}, {649, 324}, {815, 108}, {815, 324}};
   private final int[][] offset = {{-20, -20}, {20, -20}, {-20, 20}, {20, 20}, {0, 0}};
-
   private int[] coins;
+  
+  //Variables para el manejo y creación del juego
   private float price;
   private int paid, paidCount, level, maxLevel, palette;
 
+  //Variables para el control del tiempo de juego
   private boolean startTimer = true, failAdded = false;
   private int startTime, h, m, s, fallos;
   private String ohs="00", oms="00", oss="00";
   private String hs="00", ms="00", ss="00";
   
+  //Variables para las texturas de monedas y billetes
   private PImage e50tex, e20tex, e10tex, e5tex, e2tex, e1tex, c50tex, c20tex, c10tex, c5tex;
   
+  //Variables de las figuras de monedas y billetes
   private PShape e50, e20, e10, e5;
   private PShape[] cshapes = new PShape[6];
   
+  //Paleta acutal del programa
   private Palette p;
   
+  //Shader
   private PShader[] sh;
   
+  //Imagen del menú de instrucciones
   PImage howto;
-
+  
+  //Variables para el manejo de sonido
   SoundFile acierto, error, level_complete, minigame;
   
   CoinChange(String name, int max, SoundFile S321, SoundFile Ya, SoundFile acierto, SoundFile error, SoundFile level_complete, SoundFile minigame) {
@@ -237,6 +246,7 @@ class CoinChange extends MiniGame {
     controlDisplay();
   }
 
+  //Reinicia los valores para cada caso nueo del minijuego de manera aleatoria
   void setStartValues() {
     for (int i = 0; i < 6; i++) {
       coins[i] = 0;
@@ -315,6 +325,7 @@ class CoinChange extends MiniGame {
     }
   }
 
+  //Añade y elimina monedas, y controla que la cantidad de monedas de cada tipo no supere las 5 monedas
   private void manageCoins(int coin, boolean add) {
     if (add && coins[coin] < 5) {
       coins[coin]++;
@@ -323,6 +334,7 @@ class CoinChange extends MiniGame {
     }
   }
 
+  //Muestra el precio pagado por el cliente en billetes
   private void displayBills() {
     pushMatrix();
     noFill();
@@ -370,6 +382,7 @@ class CoinChange extends MiniGame {
     popMatrix();
   }
 
+  //Muestra tanto los botones de cada moneda como las monedas de cada tipo del cambio que se va a entregar
   private void displayCoins() {
     pushMatrix();
     textSize(30);
@@ -382,6 +395,7 @@ class CoinChange extends MiniGame {
     popMatrix();
   }
 
+  //Calcula si el cambio ofrecido es el exacto
   private void calculate() {
     pushMatrix();
     float res = coins[0] * 2 + coins[1] + coins[2] * 0.5 + coins[3] * 0.2 + coins[4] * 0.1 + coins[5] * 0.05;
@@ -397,6 +411,7 @@ class CoinChange extends MiniGame {
     popMatrix();
   }
   
+  //Inicializa las figuras de las monedas
   private PShape createCoin(PImage i){
     noStroke();
     i.resize(dim, dim);
@@ -407,6 +422,7 @@ class CoinChange extends MiniGame {
     return p;
   }
   
+  //Inicializa las figuras de los billetes
   private PShape createBill(PImage i){
     PShape p = createShape(RECT, 0, 0, 260, 140);
     beginShape();
